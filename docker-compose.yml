@@ -2,10 +2,7 @@ version: '3.7'
 services:
   app:
     container_name: godubi-production
-    image: godubi/backend-production
-    build:
-      context: .
-      target: production
+    image: registry.gitlab.com/zorrero/godubi-backend
     env_file:
       - .env
     ports:
