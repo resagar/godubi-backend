@@ -1,17 +1,12 @@
 version: '3.7'
 services:
   app:
-    container_name: godubi
-    image: godubi/backend
+    container_name: godubi-production
+    image: godubi/backend-production
     build:
       context: .
-      dockerfile: ./Dockerfile-dev
-      target: development
-    command: yarn start:dev
+      target: production
     env_file:
       - .env
-    volumes:
-      - .:/usr/src/app/
-      - /usr/src/app/node_modules
     ports:
       - '8085:8085'
