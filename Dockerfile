@@ -30,4 +30,4 @@ COPY . .
 
 COPY --from=builder /usr/src/app/dist ./dist
 
-CMD ["node", "dist/main"]
+CMD ["node", "dist/apps/app/main"]
