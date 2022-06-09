@@ -20,24 +20,27 @@ export class UsersService {
     return newUser;
   }
 
-  async findAll() {
+  async findAll(userId: number) {
     return await this.usersRepository.find({
       relations: {
         worker: true,
       },
+      where: {
+        id: userId,
+      },
     });
   }
 
-  async findOne(id: number) {
-    return await this.usersRepository.findOne({
-      relations: {
-        worker: true,
-      },
-      where: {
-        id,
-      },
-    });
-  }
+  // async findOne(id: number) {
+  //   return await this.usersRepository.findOne({
+  //     relations: {
+  //       worker: true,
+  //     },
+  //     where: {
+  //       id,
+  //     },
+  //   });
+  // }
 
   async findByEmail(email: string) {
     return await this.usersRepository.findOne({
