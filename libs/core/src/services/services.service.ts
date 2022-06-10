@@ -58,6 +58,28 @@ export class ServicesService {
     });
   }
 
+  async findOneByCategoryId(id: number) {
+    return await this.servicesRepository.find({
+      relations: {
+        category: true,
+        hashtags: true,
+        items: true,
+        inputs: {
+          options: true,
+        },
+        workers: {
+          user: true,
+        },
+        results: true,
+      },
+      where: {
+        category: {
+          id,
+        },
+      },
+    });
+  }
+
   async update(id: number, updateServiceDto: UpdateServiceDto) {
     return await this.servicesRepository.update(id, updateServiceDto);
   }

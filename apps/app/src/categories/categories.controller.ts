@@ -15,11 +15,15 @@ import {
 } from '@core/categories';
 import { GetCategoriesQueryDto } from '@core/categories/dto/get-categories-query.dto';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
+import { ServicesService } from '@core';
 
 @Controller('api/categories')
 @UseGuards(JwtAuthGuard)
 export class CategoriesController {
-  constructor(private readonly categoriesService: CategoriesService) {}
+  constructor(
+    private readonly categoriesService: CategoriesService,
+    private readonly servicesService: ServicesService,
+  ) {}
 
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
@@ -34,6 +38,11 @@ export class CategoriesController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(+id);
+  }
+
+  @Get(':id/services')
+  findServicesByCategoryId(@Param('id') id: string) {
+    return this.servicesService.findOneByCategoryId(+id);
   }
 
   @Patch(':id')
