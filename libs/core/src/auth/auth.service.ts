@@ -22,9 +22,9 @@ export class AuthService {
 
   async login(user: User) {
     const payload = { email: user.email, sub: user.id };
-    const abilities = this.addAbility(user.admin, user.worker);
+    const ability = this.addAbility(user.admin, user.worker);
     return {
-      user: { ...user, abilities },
+      user: { ...user, ability },
       token: this.jwtService.sign(payload),
     };
   }
