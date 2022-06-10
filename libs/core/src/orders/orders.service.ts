@@ -44,16 +44,16 @@ export class OrdersService {
         user: {
           id: userId,
         },
-        service: {
-          id: query.serviceId,
-        },
-        orderStatus: query.orderStatus,
-        createdAt: query.created,
-        workers: {
-          user: {
-            id: query.worker,
-          },
-        },
+        // service: {
+        //   id: query?.serviceId ?? undefined,
+        // },
+        // orderStatus: query?.orderStatus ?? undefined,
+        // createdAt: query?.created ?? undefined,
+        // workers: {
+        //   user: {
+        //     id: query?.worker ?? undefined,
+        //   },
+        // },
       },
     });
   }

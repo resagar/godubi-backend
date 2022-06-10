@@ -39,7 +39,7 @@ export class User {
   agent: number;
 
   @Column({ nullable: true, name: 'complete_name' })
-  complete_name: string;
+  completeName: string;
 
   @Column({ nullable: true })
   country: string;
