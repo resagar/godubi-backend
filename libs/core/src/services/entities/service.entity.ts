@@ -6,6 +6,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -14,7 +15,8 @@ import { Item } from '@core/items';
 import { Input } from '@core/inputs';
 import { Worker } from '@core/workers';
 import { Result } from '@core/results';
-import { Category } from '@core/categories';
+import { Category } from '@core/categories/entities/category.entity';
+import { Order } from '@core/orders';
 
 @Entity({
   name: 'services',
@@ -108,8 +110,8 @@ export class Service {
   })
   results: Result[];
 
-  // @OneToMany(() => Order, (order) => order.service)
-  // orders: Order[];
+  @OneToMany(() => Order, (order) => order.service)
+  orders: Order[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

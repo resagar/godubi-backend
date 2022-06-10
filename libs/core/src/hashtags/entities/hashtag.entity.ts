@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Category } from '@core/categories';
+import { Category } from '@core/categories/entities/category.entity';
 import { Service } from '@core/services';
 
 @Entity({

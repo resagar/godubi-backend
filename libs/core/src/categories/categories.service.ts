@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Like, Repository } from 'typeorm';
 
-import { Category } from './entities';
-import { GetCategoriesQueryDto } from '@core/categories/dto/get-categories-query.dto';
+import { Category } from './entities/category.entity';
+import { GetCategoriesQueryDto } from './dto/get-categories-query.dto';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoriesService {

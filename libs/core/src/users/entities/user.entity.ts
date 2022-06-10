@@ -2,11 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Worker } from '@core/workers';
+import { Order } from '@core/orders';
 
 @Entity({
   name: 'users',
@@ -88,6 +90,9 @@ export class User {
   // workers_id: number;
   @OneToOne(() => Worker, (worker) => worker.user)
   worker: Worker;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Order } from './entities';
-import { GetOrdersQueryDto } from '@core/orders/dto/get-orders-query.dto';
+import { GetOrdersQueryDto } from './dto/get-orders-query.dto';
 
 @Injectable()
 export class OrdersService {
@@ -25,6 +25,7 @@ export class OrdersService {
         createdAt: 'DESC',
       },
       relations: {
+        user: true,
         service: true,
         workers: {
           user: true,
@@ -40,7 +41,9 @@ export class OrdersService {
         },
       },
       where: {
-        userId,
+        user: {
+          id: userId,
+        },
         service: {
           id: query.serviceId,
         },
@@ -74,7 +77,9 @@ export class OrdersService {
       },
       where: {
         id,
-        userId,
+        user: {
+          id: userId,
+        },
       },
     });
   }
@@ -83,7 +88,9 @@ export class OrdersService {
     return await this.ordersRepository.update(
       {
         id,
-        userId,
+        user: {
+          id: userId,
+        },
       },
       updateOrderDto,
     );

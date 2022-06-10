@@ -14,6 +14,7 @@ import { Post } from '@core/posts';
 import { Input } from '@core/inputs';
 import { Worker } from '@core/workers';
 import { Service } from '@core/services';
+import { User } from '@core/users';
 
 @Entity({
   name: 'orders',
@@ -37,8 +38,8 @@ export class Order {
   @Column({ name: 'payment_id', nullable: true })
   paymentId: number;
 
-  @Column({ name: 'user_id', nullable: true })
-  userId: number;
+  // @Column({ name: 'user_id', nullable: true })
+  // userId: number;
 
   @Column({ nullable: true })
   title: string;
@@ -91,6 +92,10 @@ export class Order {
   @ManyToOne(() => Service)
   @JoinColumn({ name: 'services_id' })
   service: Service;
+
+  @ManyToOne(() => User, (user) => user.orders)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

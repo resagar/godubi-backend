@@ -1,5 +1,4 @@
 export * from './core.module';
-export * from './categories';
 export * from './hashtags';
 export * from './services';
 export * from './orders';

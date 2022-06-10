@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CategoriesModule } from './categories';
+import { CategoriesModule } from './categories/categories.module';
 import { HashtagsModule } from './hashtags';
 import { ServicesModule } from './services';
 import { OrdersModule } from './orders';

@@ -8,14 +8,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import {
-  CategoriesService,
-  CreateCategoryDto,
-  UpdateCategoryDto,
-} from '@core/categories';
+
 import { GetCategoriesQueryDto } from '@core/categories/dto/get-categories-query.dto';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 import { ServicesService } from '@core';
+import { CategoriesService } from '@core/categories/categories.service';
+import { CreateCategoryDto } from '@core/categories/dto/create-category.dto';
+import { UpdateCategoryDto } from '@core/categories/dto/update-category.dto';
 
 @Controller('api/categories')
 @UseGuards(JwtAuthGuard)
