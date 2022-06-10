@@ -1,11 +1,21 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import {
   CommentsService,
   CreateCommentDto,
   UpdateCommentDto,
 } from '@core/posts/comments';
+import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 
 @Controller('api/posts/comments')
+@UseGuards(JwtAuthGuard)
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 

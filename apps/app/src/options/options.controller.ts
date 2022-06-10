@@ -1,11 +1,21 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import {
   CreateOptionDto,
   OptionsService,
   UpdateOptionDto,
 } from '@core/options';
+import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 
 @Controller('api/options')
+@UseGuards(JwtAuthGuard)
 export class OptionsController {
   constructor(private readonly optionsService: OptionsService) {}
 

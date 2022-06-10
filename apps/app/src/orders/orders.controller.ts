@@ -7,12 +7,15 @@ import {
   Post,
   Query,
   Request,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateOrderDto, OrdersService, UpdateOrderDto } from '@core/orders';
 import { UserAuthInterface } from '@core/auth/userAuth.interface';
 import { GetOrdersQueryDto } from '@core/orders/dto/get-orders-query.dto';
+import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 
 @Controller('api/orders')
+@UseGuards(JwtAuthGuard)
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 

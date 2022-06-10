@@ -1,7 +1,17 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateInputDto, InputsService, UpdateInputDto } from '@core/inputs';
+import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 
 @Controller('api/inputs')
+@UseGuards(JwtAuthGuard)
 export class InputsController {
   constructor(private readonly inputsService: InputsService) {}
 

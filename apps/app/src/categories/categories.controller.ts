@@ -6,6 +6,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import {
   CategoriesService,
@@ -13,8 +14,10 @@ import {
   UpdateCategoryDto,
 } from '@core/categories';
 import { GetCategoriesQueryDto } from '@core/categories/dto/get-categories-query.dto';
+import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 
 @Controller('api/categories')
+@UseGuards(JwtAuthGuard)
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 

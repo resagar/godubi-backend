@@ -1,11 +1,21 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import {
   CreateResultDto,
   ResultsService,
   UpdateResultDto,
 } from '@core/results';
+import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 
 @Controller('api/results')
+@UseGuards(JwtAuthGuard)
 export class ResultsController {
   constructor(private readonly resultsService: ResultsService) {}
 

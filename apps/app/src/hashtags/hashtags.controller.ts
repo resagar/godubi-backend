@@ -1,11 +1,21 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import {
   CreateHashtagDto,
   HashtagsService,
   UpdateHashtagDto,
 } from '@core/hashtags';
+import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 
 @Controller('api/hashtags')
+@UseGuards(JwtAuthGuard)
 export class HashtagsController {
   constructor(private readonly hashtagsService: HashtagsService) {}
 
