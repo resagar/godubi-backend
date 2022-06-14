@@ -9,10 +9,16 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { CreateOrderDto, OrdersService, UpdateOrderDto } from '@core/orders';
+import {
+  CreateInputOrderDto,
+  CreateOrderDto,
+  UpdateOrderDto,
+} from '@core/orders/dto';
 import { UserAuthInterface } from '@core/auth/userAuth.interface';
 import { GetOrdersQueryDto } from '@core/orders/dto/get-orders-query.dto';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
+import { OrdersService } from '@core/orders/orders.service';
+import { CreateWorkerOrderDto } from '@core/orders/dto/create-worker-order.dto';
 
 @Controller('api/orders')
 @UseGuards(JwtAuthGuard)
@@ -20,8 +26,19 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.ordersService.create(createOrderDto);
+  create(
+    @Body()
+    createDto: CreateOrderDto | CreateInputOrderDto | CreateWorkerOrderDto,
+  ) {
+    if (createDto['inputOrder'] != undefined)
+      return this.ordersService.createInputOrder(
+        <CreateInputOrderDto>createDto,
+      );
+    if (createDto['workerOrder'] != undefined)
+      return this.ordersService.createWorkerOrder(
+        <CreateWorkerOrderDto>createDto,
+      );
+    return this.ordersService.create(createDto);
   }
 
   @Get()

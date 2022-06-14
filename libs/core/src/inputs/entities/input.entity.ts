@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Option } from '@core/options';
-import { Service } from '@core/services';
+import { Option } from '@core/options/entities/option.entity';
+import { Service } from '@core/services/entities/service.entity';
 
 @Entity({
   name: 'inputs',

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CategoriesModule } from './categories/categories.module';
-import { CoreModule } from '@core';
+import { CoreModule } from '@core/core.module';
 import { HashtagsModule } from './hashtags/hashtags.module';
 import { ServicesModule } from './services/services.module';
 import { OrdersModule } from './orders/orders.module';

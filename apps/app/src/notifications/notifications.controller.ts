@@ -8,9 +8,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { NotificationsService } from '@core/notifications/notifications.service';
-import { CreateNotificationDto } from '@core/notifications/dto/create-notification.dto';
 import { UserAuthInterface } from '@core/auth/userAuth.interface';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
+import { CreateNotificationDto } from '@core/notifications/dto';
 
 @Controller('api/notifications')
 @UseGuards(JwtAuthGuard)

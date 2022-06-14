@@ -7,12 +7,9 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import {
-  CreateOptionDto,
-  OptionsService,
-  UpdateOptionDto,
-} from '@core/options';
+import { CreateOptionDto, UpdateOptionDto } from '@core/options/dto';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
+import { OptionsService } from '@core/options/options.service';
 
 @Controller('api/options')
 @UseGuards(JwtAuthGuard)

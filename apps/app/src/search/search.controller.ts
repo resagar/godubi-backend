@@ -1,7 +1,9 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { HashtagsService, ServicesService, UsersService } from '@core';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 import { CategoriesService } from '@core/categories/categories.service';
+import { HashtagsService } from '@core/hashtags/hashtags.service';
+import { ServicesService } from '@core/services/services.service';
+import { UsersService } from '@core/users/users.service';
 
 @Controller('api/search')
 @UseGuards(JwtAuthGuard)

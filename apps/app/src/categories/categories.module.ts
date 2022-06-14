@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CategoriesController } from './categories.controller';
-import { ServicesModule as ServicesModuleCore } from '@core';
+import { ServicesModule as ServicesModuleCore } from '@core/services/services.module';
 import { CategoriesModule as CategoriesModuleCore } from '@core/categories/categories.module';
 
 @Module({

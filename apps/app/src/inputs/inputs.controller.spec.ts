@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { InputsController } from './inputs.controller';
-import { InputsService } from '@core/inputs';
+import { InputsService } from '@core/inputs/inputs.service';
 
 describe('InputsController', () => {
   let controller: InputsController;

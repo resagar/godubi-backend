@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Hashtag } from '@core/hashtags';
-import { Service } from '@core/services';
+import { Hashtag } from '@core/hashtags/entities/hashtag.entity';
+import { Service } from '@core/services/entities/service.entity';
 
 @Entity({
   name: 'categories',

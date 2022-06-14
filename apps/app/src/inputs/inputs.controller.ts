@@ -7,8 +7,9 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { CreateInputDto, InputsService, UpdateInputDto } from '@core/inputs';
+import { CreateInputDto, UpdateInputDto } from '@core/inputs/dto';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
+import { InputsService } from '@core/inputs/inputs.service';
 
 @Controller('api/inputs')
 @UseGuards(JwtAuthGuard)

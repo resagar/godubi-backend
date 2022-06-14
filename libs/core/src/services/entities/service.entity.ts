@@ -10,13 +10,13 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Hashtag } from '@core/hashtags';
-import { Item } from '@core/items';
-import { Input } from '@core/inputs';
-import { Worker } from '@core/workers';
-import { Result } from '@core/results';
+import { Hashtag } from '@core/hashtags/entities/hashtag.entity';
+import { Item } from '@core/items/entities/item.entity';
+import { Input } from '@core/inputs/entities/input.entity';
+import { Worker } from '@core/workers/entities/worker.entity';
+import { Result } from '@core/results/entities/result.entity';
 import { Category } from '@core/categories/entities/category.entity';
-import { Order } from '@core/orders';
+import { Order } from '@core/orders/entities/order.entity';
 
 @Entity({
   name: 'services',

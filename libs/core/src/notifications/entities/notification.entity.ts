@@ -7,7 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Order, User } from '@core';
+import { User } from '@core/users/entities/user.entity';
+import { Order } from '@core/orders/entities/order.entity';
 
 @Entity({
   name: 'notifications',

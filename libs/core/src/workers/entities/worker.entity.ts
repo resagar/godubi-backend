@@ -9,8 +9,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from '@core/users';
-import { Service } from '@core/services';
+import { User } from '@core/users/entities/user.entity';
+import { Service } from '@core/services/entities/service.entity';
 
 @Entity({
   name: 'workers',

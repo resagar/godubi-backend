@@ -7,12 +7,9 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import {
-  CreateServiceDto,
-  ServicesService,
-  UpdateServiceDto,
-} from '@core/services';
+import { CreateServiceDto, UpdateServiceDto } from '@core/services/dto';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
+import { ServicesService } from '@core/services/services.service';
 
 @Controller('api/services')
 @UseGuards(JwtAuthGuard)

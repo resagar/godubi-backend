@@ -10,8 +10,8 @@ import {
 } from 'typeorm';
 
 import { Comment } from '../comments/entities';
-import { Order } from '@core/orders';
-import { User } from '@core/users';
+import { Order } from '@core/orders/entities/order.entity';
+import { User } from '@core/users/entities/user.entity';
 
 @Entity({
   name: 'posts',

@@ -10,11 +10,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Post } from '@core/posts';
-import { Input } from '@core/inputs';
-import { Worker } from '@core/workers';
-import { Service } from '@core/services';
-import { User } from '@core/users';
+import { Post } from '@core/posts/entities/post.entity';
+import { Input } from '@core/inputs/entities/input.entity';
+import { Worker } from '@core/workers/entities/worker.entity';
+import { Service } from '@core/services/entities/service.entity';
+import { User } from '@core/users/entities/user.entity';
 
 @Entity({
   name: 'orders',
@@ -38,9 +38,6 @@ export class Order {
   @Column({ name: 'payment_id', nullable: true })
   paymentId: number;
 
-  // @Column({ name: 'user_id', nullable: true })
-  // userId: number;
-
   @Column({ nullable: true })
   title: string;
 
@@ -52,9 +49,6 @@ export class Order {
 
   @Column({ name: 'order_description', nullable: true })
   orderDescription: string;
-
-  // @Column({ name: 'services_id' })
-  // servicesId: number;
 
   @Column({ nullable: true })
   website: string;

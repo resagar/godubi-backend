@@ -1,6 +1,6 @@
 export class GetOrdersQueryDto {
-  public created: Date;
-  public orderStatus: string;
-  public serviceId: number;
-  public worker: number;
+  public created: Date | undefined;
+  public orderStatus: string | undefined;
+  public serviceId: number | undefined;
+  public worker: number | undefined;
 }

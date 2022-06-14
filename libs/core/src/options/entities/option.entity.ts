@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Input } from '@core/inputs';
+import { Input } from '@core/inputs/entities/input.entity';
 
 @Entity({
   name: 'options',

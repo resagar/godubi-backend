@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Worker } from '@core/workers';
-import { Order } from '@core/orders';
+import { Worker } from '@core/workers/entities/worker.entity';
+import { Order } from '@core/orders/entities/order.entity';
 
 @Entity({
   name: 'users',

@@ -7,9 +7,10 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto, UsersService } from '@core/users';
+import { CreateUserDto, UpdateUserDto } from '@core/users/dto';
 import { UserAuthInterface } from '@core/auth/userAuth.interface';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
+import { UsersService } from '@core/users/users.service';
 
 @Controller('api/users')
 @UseGuards(JwtAuthGuard)

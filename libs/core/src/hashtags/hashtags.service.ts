@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateHashtagDto, UpdateHashtagDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Hashtag } from './entities';
+import { Hashtag } from './entities/hashtag.entity';
 import { Like, Repository } from 'typeorm';
 
 @Injectable()

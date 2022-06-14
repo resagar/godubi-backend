@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Category } from '@core/categories/entities/category.entity';
-import { Service } from '@core/services';
+import { Service } from '@core/services/entities/service.entity';
 
 @Entity({
   name: 'hashtags',

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HashtagsController } from './hashtags.controller';
-import { HashtagsService } from '@core/hashtags';
+import { HashtagsService } from '@core/hashtags/hashtags.service';
 
 describe('HashtagsController', () => {
   let controller: HashtagsController;

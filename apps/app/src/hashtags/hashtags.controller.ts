@@ -7,12 +7,9 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import {
-  CreateHashtagDto,
-  HashtagsService,
-  UpdateHashtagDto,
-} from '@core/hashtags';
+import { CreateHashtagDto, UpdateHashtagDto } from '@core/hashtags/dto';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
+import { HashtagsService } from '@core/hashtags/hashtags.service';
 
 @Controller('api/hashtags')
 @UseGuards(JwtAuthGuard)

@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
 import { SearchController } from './search.controller';
-import {
-  HashtagsModule as HashtagsModuleCore,
-  ServicesModule as ServicesModuleCore,
-  UsersModule as UsersModuleCore,
-} from '@core';
+import { HashtagsModule as HashtagsModuleCore } from '@core/hashtags/hashtags.module';
+import { ServicesModule as ServicesModuleCore } from '@core/services/services.module';
+import { UsersModule as UsersModuleCore } from '@core/users/users.module';
 import { CategoriesModule as CategoriesModuleCore } from '@core/categories/categories.module';
 
 @Module({
