@@ -14,10 +14,10 @@ export class InputOrder {
   id: number;
 
   @Column({ name: 'inputs_id' })
-  inputId: number;
+  input: number;
 
   @Column({ name: 'orders_id' })
-  orderId: number;
+  order: number;
 
   @Column()
   value: string;

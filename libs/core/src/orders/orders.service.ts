@@ -1,12 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import {
-  CreateInputOrderDto,
-  CreateOrderDto,
-  GetOrdersQueryDto,
-  UpdateOrderDto,
-} from './dto';
+import { CreateInputOrderDto, CreateOrderDto, UpdateOrderDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, Like, Repository } from 'typeorm';
+import { FindOptionsWhere, Repository } from 'typeorm';
 
 import { Order } from './entities/order.entity';
 import { InputOrder } from './entities/input-order.entity';
@@ -44,16 +39,7 @@ export class OrdersService {
     return newWorkerOrder;
   }
 
-  async findAll(userId: number, query: GetOrdersQueryDto) {
-    const where: FindOptionsWhere<Order> = {
-      user: {
-        id: userId,
-      },
-    };
-    query.serviceId ? (where.service = { id: query.serviceId }) : null;
-    query.orderStatus ? (where.orderStatus = query.orderStatus) : null;
-    query.created ? (where.createdAt = Like(query.created)) : null;
-    query.worker ? (where.workers = { id: query.worker }) : null;
+  async findAll(where: FindOptionsWhere<Order>) {
     return await this.ordersRepository.find({
       order: {
         createdAt: 'DESC',
@@ -78,7 +64,7 @@ export class OrdersService {
     });
   }
 
-  async findOne(id: number, userId: number) {
+  async findOne(where: FindOptionsWhere<Order>) {
     return await this.ordersRepository.findOne({
       relations: {
         service: true,
@@ -95,25 +81,12 @@ export class OrdersService {
           },
         },
       },
-      where: {
-        id,
-        user: {
-          id: userId,
-        },
-      },
+      where,
     });
   }
 
-  async update(id: number, updateOrderDto: UpdateOrderDto, userId: number) {
-    return await this.ordersRepository.update(
-      {
-        id,
-        user: {
-          id: userId,
-        },
-      },
-      updateOrderDto,
-    );
+  async update(where: FindOptionsWhere<Order>, updateOrderDto: UpdateOrderDto) {
+    return await this.ordersRepository.update(where, updateOrderDto);
   }
 
   // remove(id: number) {

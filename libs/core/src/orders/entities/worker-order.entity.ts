@@ -14,10 +14,10 @@ export class WorkerOrder {
   id: number;
 
   @Column({ name: 'orders_id' })
-  orderId: number;
+  order: number;
 
   @Column({ name: 'workers_id' })
-  workerId: number;
+  worker: number;
 
   @Column({ name: 'type_action' })
   typeAction: string;

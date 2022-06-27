@@ -19,6 +19,12 @@ export class PostsService {
 
   async findAll() {
     return await this.postsRepository.find({
+      order: {
+        createdAt: 'DESC',
+        comments: {
+          createdAt: 'ASC',
+        },
+      },
       relations: {
         comments: {
           user: true,
@@ -30,6 +36,11 @@ export class PostsService {
 
   async findOne(id: number) {
     return await this.postsRepository.findOne({
+      order: {
+        comments: {
+          createdAt: 'ASC',
+        },
+      },
       relations: {
         comments: {
           user: true,

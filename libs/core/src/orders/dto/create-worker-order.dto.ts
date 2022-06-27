@@ -1,9 +1,9 @@
 export class CreateWorkerOrderDto {
-  workerOrder: WorkerOrderId;
+  workerOrder: WorkerOrderId[];
 }
 
 class WorkerOrderId {
-  orderId: number;
-  workerId: number;
+  order: number;
+  worker: number;
   typeAction: string;
 }

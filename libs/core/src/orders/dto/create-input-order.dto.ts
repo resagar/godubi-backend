@@ -1,9 +1,9 @@
 export class CreateInputOrderDto {
-  inputOrder: InputOrderId;
+  inputOrder: InputOrderId[];
 }
 
 class InputOrderId {
-  orderId: number;
-  inputId: number;
+  order: number;
+  input: number;
   value: string;
 }

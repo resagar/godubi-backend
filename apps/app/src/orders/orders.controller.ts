@@ -17,8 +17,8 @@ import {
 import { UserAuthInterface } from '@core/auth/userAuth.interface';
 import { GetOrdersQueryDto } from '@core/orders/dto/get-orders-query.dto';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
-import { OrdersService } from '@core/orders/orders.service';
 import { CreateWorkerOrderDto } from '@core/orders/dto/create-worker-order.dto';
+import { OrdersService } from './orders.service';
 
 @Controller('api/orders')
 @UseGuards(JwtAuthGuard)
@@ -38,7 +38,7 @@ export class OrdersController {
       return this.ordersService.createWorkerOrder(
         <CreateWorkerOrderDto>createDto,
       );
-    return this.ordersService.create(createDto);
+    return this.ordersService.create(<CreateOrderDto>createDto);
   }
 
   @Get()
