@@ -31,9 +31,6 @@ export class Worker {
   @Column({ nullable: true })
   range: string;
 
-  // @Column({ name: 'users_id' })
-  // userId: number;
-
   @OneToOne(() => User, (user) => user.worker)
   @JoinColumn({ name: 'users_id' })
   user: User;

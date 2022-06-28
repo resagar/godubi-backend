@@ -17,6 +17,7 @@ import { Worker } from '@core/workers/entities/worker.entity';
 import { Result } from '@core/results/entities/result.entity';
 import { Category } from '@core/categories/entities/category.entity';
 import { Order } from '@core/orders/entities/order.entity';
+import { Portfolio } from '@core/portfolio/entities/portfolio.entity';
 
 @Entity({
   name: 'services',
@@ -112,6 +113,9 @@ export class Service {
 
   @OneToMany(() => Order, (order) => order.service)
   orders: Order[];
+
+  @OneToMany(() => Portfolio, (portfolio) => portfolio.service)
+  portfolios: Portfolio[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

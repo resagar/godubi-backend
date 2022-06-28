@@ -86,9 +86,9 @@ export class User {
   @Column({ nullable: true })
   website: string;
 
-  // @Column({ nullable: true })
-  // workers_id: number;
-  @OneToOne(() => Worker, (worker) => worker.user)
+  @OneToOne(() => Worker, (worker) => worker.user, {
+    cascade: true,
+  })
   worker: Worker;
 
   @OneToMany(() => Order, (order) => order.user)

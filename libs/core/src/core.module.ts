@@ -13,6 +13,7 @@ import { ResultsModule } from './results/results.module';
 import { WorkersModule } from './workers/workers.module';
 import { PostsModule } from './posts/posts.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { PortfolioModule } from './portfolio/portfolio.module';
 
 import configuration from './config/configuration';
 
@@ -49,6 +50,7 @@ import configuration from './config/configuration';
     WorkersModule,
     PostsModule,
     NotificationsModule,
+    PortfolioModule,
   ],
 })
 export class CoreModule {}

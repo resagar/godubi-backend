@@ -23,7 +23,9 @@ export class UsersService {
   async findAll(userId: number) {
     return await this.usersRepository.find({
       relations: {
-        worker: true,
+        worker: {
+          services: true,
+        },
       },
       where: {
         id: userId,

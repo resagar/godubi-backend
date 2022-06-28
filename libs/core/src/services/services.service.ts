@@ -1,21 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { CreateServiceDto, UpdateServiceDto } from './dto';
+import {
+  CreateServiceDto,
+  CreateServiceWorkerDto,
+  UpdateServiceDto,
+} from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 
 import { Service } from './entities/service.entity';
+import { ServiceWorker } from './entities/service-worker.entity';
 
 @Injectable()
 export class ServicesService {
   constructor(
     @InjectRepository(Service)
     private servicesRepository: Repository<Service>,
+    @InjectRepository(ServiceWorker)
+    private serviceWorkerRepository: Repository<ServiceWorker>,
   ) {}
 
   async create(createServiceDto: CreateServiceDto) {
     const newService = this.servicesRepository.create(createServiceDto);
     await this.servicesRepository.save(newService);
     return newService;
+  }
+
+  async createWorkerService(createServiceWorkerDto: CreateServiceWorkerDto) {
+    const { workerService } = createServiceWorkerDto;
+    const newWorkerService = this.serviceWorkerRepository.create(workerService);
+    await this.serviceWorkerRepository.save(newWorkerService);
+    return newWorkerService;
   }
 
   async findAll() {
@@ -33,6 +47,7 @@ export class ServicesService {
         workers: {
           user: true,
         },
+        portfolios: true,
         results: true,
       },
     });
@@ -51,6 +66,7 @@ export class ServicesService {
           user: true,
         },
         results: true,
+        portfolios: true,
       },
       where: {
         id,
@@ -71,6 +87,7 @@ export class ServicesService {
           user: true,
         },
         results: true,
+        portfolios: true,
       },
       where: {
         category: {

@@ -22,15 +22,23 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const payload = { email: user.email, sub: user.id };
-    const ability = this.addAbility(user.admin, user.worker);
+    const roles = this.addRoles(user.admin === 1, user.isWorker === 1);
+    const payload = { email: user.email, sub: user.id, roles: roles };
+    const ability = this.addAbility(user.admin, user.isWorker);
     return {
-      user: { ...user, ability },
+      user: { ...user, ability, roles },
       token: this.jwtService.sign(payload),
     };
   }
 
-  addAbility(admin, worker) {
+  addRoles(admin: boolean, worker: boolean): string[] {
+    const roles: string[] = [];
+    if (admin) roles.push('Admin');
+    if (worker) roles.push('Worker');
+    return roles;
+  }
+
+  addAbility(admin: number, worker: number) {
     const ability = [];
     if (admin === 1) {
       ability.push({

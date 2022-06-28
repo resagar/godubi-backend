@@ -1,5 +1,6 @@
 import { Worker } from '@core/workers/entities/worker.entity';
 import { Order } from '@core/orders/entities/order.entity';
+import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateUserDto {
   public id: number;
@@ -26,6 +27,8 @@ export class CreateUserDto {
   public languages: string;
   public birthday: string;
   public website: string;
-  public worker: Worker;
+  public worker: CreateWorker;
   public orders: Order;
 }
+
+class CreateWorker extends PartialType<Worker>(Worker) {}

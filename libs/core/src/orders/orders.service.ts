@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateInputOrderDto, CreateOrderDto, UpdateOrderDto } from './dto';
+import {
+  CreateInputOrderDto,
+  CreateOrderDto,
+  UpdateOrderDto,
+  UpdateOrderWorkerDto,
+} from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 
@@ -85,7 +90,10 @@ export class OrdersService {
     });
   }
 
-  async update(where: FindOptionsWhere<Order>, updateOrderDto: UpdateOrderDto) {
+  async update(
+    where: FindOptionsWhere<Order>,
+    updateOrderDto: UpdateOrderDto | UpdateOrderWorkerDto,
+  ) {
     return await this.ordersRepository.update(where, updateOrderDto);
   }
 
