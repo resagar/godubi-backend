@@ -1,14 +1,14 @@
 version: '3.7'
 services:
   app:
-    container_name: godubi-production
+    container_name: godubi-app
     image: registry.gitlab.com/zorrero/godubi-backend
     env_file:
       - .env
     ports:
       - '8085:8085'
   worker:
-    container_name: godubi-production
+    container_name: godubi-worker
     image: registry.gitlab.com/zorrero/godubi-backend
     env_file:
       - .env
