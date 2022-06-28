@@ -3,6 +3,7 @@ services:
   app:
     container_name: godubi-app
     image: registry.gitlab.com/zorrero/godubi-backend
+    command: node dist/apps/app/main
     env_file:
       - .env
     ports:
@@ -10,6 +11,7 @@ services:
   worker:
     container_name: godubi-worker
     image: registry.gitlab.com/zorrero/godubi-backend
+    command: node dist/apps/worker/main
     env_file:
       - .env
     ports:

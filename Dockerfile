@@ -29,5 +29,3 @@ RUN yarn install --production
 COPY . .
 
 COPY --from=builder /usr/src/app/dist ./dist
-
-CMD ["node", "dist/apps/app/main"]
