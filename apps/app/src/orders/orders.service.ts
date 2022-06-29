@@ -35,7 +35,9 @@ export class OrdersService {
     query.serviceId ? (where.service = { id: query.serviceId }) : null;
     query.orderStatus ? (where.orderStatus = query.orderStatus) : null;
     query.created ? (where.createdAt = Like(query.created)) : null;
-    query.worker ? (where.workers = { id: query.worker }) : null;
+    query.worker
+      ? (where.workerOrders = { worker: { id: query.worker } })
+      : null;
     return await this.ordersServiceCore.findAll(where);
   }
 

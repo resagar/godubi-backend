@@ -17,3 +17,5 @@ export class UpdateOrderWorkerDto extends PartialType(CreateOrderDto) {
   public orderTime: Date;
   public orderCost: number;
 }
+
+export class UpdateOrderAdminDto {}

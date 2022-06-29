@@ -16,3 +16,11 @@ services:
       - .env
     ports:
       - '8082:8082'
+  admin:
+    container_name: godubi-admin
+    image: registry.gitlab.com/zorrero/godubi-backend
+    command: node dist/apps/admin/main
+    env_file:
+      - .env
+    ports:
+      - '8000:8000'

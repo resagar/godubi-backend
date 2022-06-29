@@ -5,12 +5,14 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '@core/users/entities/user.entity';
 import { Service } from '@core/services/entities/service.entity';
+import { WorkerOrder } from '@core/orders/entities/worker-order.entity';
 
 @Entity({
   name: 'workers',
@@ -46,6 +48,9 @@ export class Worker {
     },
   })
   services: Service[];
+
+  @OneToMany(() => WorkerOrder, (workerOrder) => workerOrder.worker)
+  workerOrders: WorkerOrder[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

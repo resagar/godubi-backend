@@ -2,9 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Order } from './order.entity';
+import { Worker } from '@core/workers/entities/worker.entity';
 
 @Entity({
   name: 'orders_workers',
@@ -13,11 +17,13 @@ export class WorkerOrder {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'orders_id' })
-  order: number;
+  @ManyToOne(() => Order, (order) => order.workerOrders)
+  @JoinColumn({ name: 'orders_id' })
+  order: Order;
 
-  @Column({ name: 'workers_id' })
-  worker: number;
+  @ManyToOne(() => Worker, (worker) => worker.workerOrders)
+  @JoinColumn({ name: 'workers_id' })
+  worker: Worker;
 
   @Column({ name: 'type_action' })
   typeAction: string;

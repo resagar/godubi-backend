@@ -11,10 +11,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Post } from '@core/posts/entities/post.entity';
-import { Input } from '@core/inputs/entities/input.entity';
 import { Worker } from '@core/workers/entities/worker.entity';
 import { Service } from '@core/services/entities/service.entity';
 import { User } from '@core/users/entities/user.entity';
+import { InputOrder } from './input-order.entity';
+import { WorkerOrder } from './worker-order.entity';
 
 @Entity({
   name: 'orders',
@@ -59,29 +60,11 @@ export class Order {
   @OneToMany(() => Post, (post) => post.order)
   post: Post;
 
-  @ManyToMany(() => Input)
-  @JoinTable({
-    name: 'inputs_orders',
-    joinColumn: {
-      name: 'orders_id',
-    },
-    inverseJoinColumn: {
-      name: 'inputs_id',
-    },
-  })
-  inputs: Input[];
+  @OneToMany(() => InputOrder, (inputOrder) => inputOrder.order)
+  inputOrders: InputOrder[];
 
-  @ManyToMany(() => Worker)
-  @JoinTable({
-    name: 'orders_workers',
-    joinColumn: {
-      name: 'orders_id',
-    },
-    inverseJoinColumn: {
-      name: 'workers_id',
-    },
-  })
-  workers: Worker[];
+  @OneToMany(() => WorkerOrder, (workerOrder) => workerOrder.order)
+  workerOrders: WorkerOrder[];
 
   @ManyToOne(() => Service)
   @JoinColumn({ name: 'services_id' })

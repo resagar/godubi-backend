@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateInputOrderDto,
   CreateOrderDto,
+  UpdateOrderAdminDto,
   UpdateOrderDto,
   UpdateOrderWorkerDto,
 } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { FindOptionsWhere, ObjectID, Repository } from 'typeorm';
 
 import { Order } from './entities/order.entity';
 import { InputOrder } from './entities/input-order.entity';
@@ -44,7 +45,7 @@ export class OrdersService {
     return newWorkerOrder;
   }
 
-  async findAll(where: FindOptionsWhere<Order>) {
+  async findAll(where?: FindOptionsWhere<Order> | undefined) {
     return await this.ordersRepository.find({
       order: {
         createdAt: 'DESC',
@@ -52,11 +53,15 @@ export class OrdersService {
       relations: {
         user: true,
         service: true,
-        workers: {
-          user: true,
+        workerOrders: {
+          worker: {
+            user: true,
+          },
         },
-        inputs: {
-          options: true,
+        inputOrders: {
+          input: {
+            options: true,
+          },
         },
         post: {
           user: true,
@@ -69,15 +74,19 @@ export class OrdersService {
     });
   }
 
-  async findOne(where: FindOptionsWhere<Order>) {
+  async findOne(where?: FindOptionsWhere<Order> | undefined) {
     return await this.ordersRepository.findOne({
       relations: {
         service: true,
-        workers: {
-          user: true,
+        workerOrders: {
+          worker: {
+            user: true,
+          },
         },
-        inputs: {
-          options: true,
+        inputOrders: {
+          input: {
+            options: true,
+          },
         },
         post: {
           user: true,
@@ -91,10 +100,19 @@ export class OrdersService {
   }
 
   async update(
-    where: FindOptionsWhere<Order>,
-    updateOrderDto: UpdateOrderDto | UpdateOrderWorkerDto,
+    criteria:
+      | string
+      | number
+      | Date
+      | ObjectID
+      | string[]
+      | number[]
+      | Date[]
+      | ObjectID[]
+      | FindOptionsWhere<Order>,
+    updateOrderDto: UpdateOrderDto | UpdateOrderWorkerDto | UpdateOrderAdminDto,
   ) {
-    return await this.ordersRepository.update(where, updateOrderDto);
+    return await this.ordersRepository.update(criteria, updateOrderDto);
   }
 
   // remove(id: number) {

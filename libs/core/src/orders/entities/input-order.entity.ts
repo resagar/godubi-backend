@@ -1,10 +1,14 @@
+import { Input } from '@core/inputs/entities/input.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Order } from './order.entity';
 
 @Entity({
   name: 'inputs_orders',
@@ -13,11 +17,13 @@ export class InputOrder {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'inputs_id' })
-  input: number;
+  @ManyToOne(() => Input, (input) => input.inputOrders)
+  @JoinColumn({ name: 'inputs_id' })
+  input: Input;
 
-  @Column({ name: 'orders_id' })
-  order: number;
+  @ManyToOne(() => Order, (order) => order.inputOrders)
+  @JoinColumn({ name: 'orders_id' })
+  order: Order;
 
   @Column()
   value: string;

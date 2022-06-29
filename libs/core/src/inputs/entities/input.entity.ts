@@ -4,11 +4,13 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Option } from '@core/options/entities/option.entity';
 import { Service } from '@core/services/entities/service.entity';
+import { InputOrder } from '@core/orders/entities/input-order.entity';
 
 @Entity({
   name: 'inputs',
@@ -58,6 +60,9 @@ export class Input {
     },
   })
   services: Service[];
+
+  @OneToMany(() => InputOrder, (inputOrder) => inputOrder.input)
+  inputOrders: InputOrder[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
