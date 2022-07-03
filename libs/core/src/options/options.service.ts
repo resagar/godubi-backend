@@ -38,7 +38,7 @@ export class OptionsService {
     return await this.optionsRepository.update(id, updateOptionDto);
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} option`;
-  // }
+  async remove(id: number) {
+    return await this.optionsRepository.delete(id);
+  }
 }

@@ -4,9 +4,11 @@ import { CategoriesService } from '@core/categories/categories.service';
 import { HashtagsService } from '@core/hashtags/hashtags.service';
 import { ServicesService } from '@core/services/services.service';
 import { UsersService } from '@core/users/users.service';
+import { RolesGuard } from '@core/auth-role.guard';
+import { Roles } from '@core/roles.decorator';
 
 @Controller('api/search')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class SearchController {
   constructor(
     private readonly categoriesServices: CategoriesService,
@@ -16,6 +18,7 @@ export class SearchController {
   ) {}
 
   @Post()
+  @Roles('Admin')
   async search(@Body('query') search: string) {
     const categories = await this.categoriesServices.findAllBySearch(search);
     const hashtags = await this.hashtagsService.findAllBySearch(search);

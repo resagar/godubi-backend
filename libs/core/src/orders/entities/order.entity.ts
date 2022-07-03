@@ -3,15 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Post } from '@core/posts/entities/post.entity';
-import { Worker } from '@core/workers/entities/worker.entity';
 import { Service } from '@core/services/entities/service.entity';
 import { User } from '@core/users/entities/user.entity';
 import { InputOrder } from './input-order.entity';
@@ -57,20 +54,34 @@ export class Order {
   @Column({ name: 'order_cost', nullable: true })
   orderCost: number;
 
-  @OneToMany(() => Post, (post) => post.order)
+  @OneToMany(() => Post, (post) => post.order, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   post: Post;
 
-  @OneToMany(() => InputOrder, (inputOrder) => inputOrder.order)
+  @OneToMany(() => InputOrder, (inputOrder) => inputOrder.order, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   inputOrders: InputOrder[];
 
-  @OneToMany(() => WorkerOrder, (workerOrder) => workerOrder.order)
+  @OneToMany(() => WorkerOrder, (workerOrder) => workerOrder.order, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   workerOrders: WorkerOrder[];
 
-  @ManyToOne(() => Service)
+  @ManyToOne(() => Service, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'services_id' })
   service: Service;
 
-  @ManyToOne(() => User, (user) => user.orders)
+  @ManyToOne(() => User, (user) => user.orders, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user: User;
 

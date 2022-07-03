@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Service } from '@core/services/entities/service.entity';
+import { Worker } from '@core/workers/entities/worker.entity';
 
 @Entity({ name: 'portfolio' })
 export class Portfolio {
@@ -26,9 +27,17 @@ export class Portfolio {
   @Column({ nullable: true })
   video: string;
 
-  @ManyToOne(() => Service)
+  @ManyToOne(() => Service, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'services_id' })
   service: Service;
+
+  @ManyToOne(() => Worker, (worker) => worker.portfolios, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'worker_id' })
+  worker: Worker;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

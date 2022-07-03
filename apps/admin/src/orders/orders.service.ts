@@ -49,7 +49,7 @@ export class OrdersService {
     return await this.ordersServiceCore.update(+id, updateOrderAdminDto);
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} order`;
-  // }
+  async remove(id: number) {
+    return await this.ordersServiceCore.remove(+id);
+  }
 }

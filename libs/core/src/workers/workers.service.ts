@@ -22,6 +22,7 @@ export class WorkersService {
       relations: {
         user: true,
         services: true,
+        portfolios: true,
       },
     });
   }
@@ -31,6 +32,7 @@ export class WorkersService {
       relations: {
         user: true,
         services: true,
+        portfolios: true,
       },
       where: { id },
     });
@@ -40,7 +42,7 @@ export class WorkersService {
     return await this.workersRepository.update(id, updateWorkerDto);
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} worker`;
-  // }
+  async remove(id: number) {
+    return await this.workersRepository.delete(id);
+  }
 }

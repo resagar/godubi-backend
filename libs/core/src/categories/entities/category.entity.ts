@@ -46,7 +46,7 @@ export class Category {
   public priority: number;
 
   @ManyToMany(() => Hashtag, (hashtag) => hashtag.categories, {
-    cascade: true,
+    onDelete: 'CASCADE',
   })
   @JoinTable({
     name: 'categories_hashtags',
@@ -59,7 +59,9 @@ export class Category {
   })
   hashtags: Hashtag[];
 
-  @OneToMany(() => Service, (service) => service.category)
+  @OneToMany(() => Service, (service) => service.category, {
+    onDelete: 'CASCADE',
+  })
   services: Service[];
 
   @CreateDateColumn({ name: 'created_at' })

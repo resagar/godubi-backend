@@ -57,7 +57,7 @@ export class PostsService {
     return await this.postsRepository.update(id, updatePostDto);
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} post`;
-  // }
+  async remove(id: number) {
+    return await this.postsRepository.delete(id);
+  }
 }

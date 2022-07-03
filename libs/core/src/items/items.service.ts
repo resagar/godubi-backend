@@ -38,7 +38,7 @@ export class ItemsService {
     return await this.itemsRepository.update(id, updateItemDto);
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} item`;
-  // }
+  async remove(id: number) {
+    return await this.itemsRepository.delete(id);
+  }
 }

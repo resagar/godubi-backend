@@ -31,7 +31,7 @@ export class CommentsService {
     return await this.commentsRepository.update(id, updateCommentDto);
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} comment`;
-  // }
+  async remove(id: number) {
+    return await this.commentsRepository.delete(id);
+  }
 }

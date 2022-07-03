@@ -109,7 +109,7 @@ export class ServicesService {
     });
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} service`;
-  // }
+  async remove(id: number) {
+    return await this.servicesRepository.delete(id);
+  }
 }

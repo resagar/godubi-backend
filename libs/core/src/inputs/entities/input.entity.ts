@@ -37,7 +37,9 @@ export class Input {
   @Column({ nullable: true })
   icon: string;
 
-  @ManyToMany(() => Option, (option) => option.inputs)
+  @ManyToMany(() => Option, (option) => option.inputs, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable({
     name: 'inputs_options',
     joinColumn: {
@@ -49,7 +51,9 @@ export class Input {
   })
   options: Option[];
 
-  @ManyToMany(() => Service, (service) => service.inputs)
+  @ManyToMany(() => Service, (service) => service.inputs, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable({
     name: 'inputs_services',
     joinColumn: {
@@ -61,7 +65,9 @@ export class Input {
   })
   services: Service[];
 
-  @OneToMany(() => InputOrder, (inputOrder) => inputOrder.input)
+  @OneToMany(() => InputOrder, (inputOrder) => inputOrder.input, {
+    onDelete: 'CASCADE',
+  })
   inputOrders: InputOrder[];
 
   @CreateDateColumn({ name: 'created_at' })

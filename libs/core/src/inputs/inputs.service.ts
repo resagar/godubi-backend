@@ -40,7 +40,7 @@ export class InputsService {
     return await this.inputsRepository.update(id, updateInputDto);
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} input`;
-  // }
+  async remove(id: number) {
+    return await this.inputsRepository.delete(id);
+  }
 }

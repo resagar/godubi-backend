@@ -34,7 +34,10 @@ export class Option {
   @Column()
   icon: string;
 
-  @ManyToMany(() => Input, (input) => input.options)
+  @ManyToMany(() => Input, (input) => input.options, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinTable({
     name: 'inputs_options',
     joinColumn: {

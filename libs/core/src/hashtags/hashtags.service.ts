@@ -50,7 +50,7 @@ export class HashtagsService {
     });
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} hashtag`;
-  // }
+  async remove(id: number) {
+    return await this.hashtagsRepository.delete(id);
+  }
 }

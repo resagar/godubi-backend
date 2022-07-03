@@ -38,7 +38,7 @@ export class ResultsService {
     return await this.ordersRepository.update(id, updateResultDto);
   }
 
-  // async remove(id: number) {
-  //   return `This action removes a #${id} result`;
-  // }
+  async remove(id: number) {
+    return await this.ordersRepository.delete(id);
+  }
 }

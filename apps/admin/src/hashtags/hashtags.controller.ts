@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -42,8 +43,8 @@ export class HashtagsController {
     return this.hashtagsService.update(+id, updateHashtagDto);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.hashtagsService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.hashtagsService.remove(+id);
+  }
 }

@@ -25,7 +25,9 @@ export class Item {
   @Column({ nullable: true })
   icon: string;
 
-  @ManyToMany(() => Service, (service) => service.items)
+  @ManyToMany(() => Service, (service) => service.items, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable({
     name: 'items_services',
     joinColumn: {

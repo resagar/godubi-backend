@@ -115,7 +115,7 @@ export class OrdersService {
     return await this.ordersRepository.update(criteria, updateOrderDto);
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} order`;
-  // }
+  async remove(id: number) {
+    return await this.ordersRepository.delete(id);
+  }
 }

@@ -38,7 +38,10 @@ export class Service {
   // @Column({ name: 'categories_id' })
   // categoryId: number;
 
-  @ManyToOne(() => Category, (category) => category.services)
+  @ManyToOne(() => Category, (category) => category.services, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'categories_id' })
   category: any;
 
@@ -51,7 +54,10 @@ export class Service {
   @Column({ nullable: true })
   priority: number;
 
-  @ManyToMany(() => Hashtag, (hashtag) => hashtag.services)
+  @ManyToMany(() => Hashtag, (hashtag) => hashtag.services, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinTable({
     name: 'hashtags_services',
     joinColumn: {
@@ -63,7 +69,9 @@ export class Service {
   })
   hashtags: Hashtag[];
 
-  @ManyToMany(() => Item, (item) => item.services)
+  @ManyToMany(() => Item, (item) => item.services, {
+    cascade: true,
+  })
   @JoinTable({
     name: 'items_services',
     joinColumn: {
@@ -75,7 +83,10 @@ export class Service {
   })
   items: Item[];
 
-  @ManyToMany(() => Input, (input) => input.services)
+  @ManyToMany(() => Input, (input) => input.services, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinTable({
     name: 'inputs_services',
     joinColumn: {
@@ -87,7 +98,10 @@ export class Service {
   })
   inputs: Input[];
 
-  @ManyToMany(() => Worker, (worker) => worker.services)
+  @ManyToMany(() => Worker, (worker) => worker.services, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinTable({
     name: 'services_workers',
     joinColumn: {
@@ -99,7 +113,10 @@ export class Service {
   })
   workers: Worker[];
 
-  @ManyToMany(() => Result, (result) => result.services)
+  @ManyToMany(() => Result, (result) => result.services, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinTable({
     name: 'results_services',
     joinColumn: {
@@ -111,10 +128,16 @@ export class Service {
   })
   results: Result[];
 
-  @OneToMany(() => Order, (order) => order.service)
+  @OneToMany(() => Order, (order) => order.service, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   orders: Order[];
 
-  @OneToMany(() => Portfolio, (portfolio) => portfolio.service)
+  @OneToMany(() => Portfolio, (portfolio) => portfolio.service, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   portfolios: Portfolio[];
 
   @CreateDateColumn({ name: 'created_at' })

@@ -52,7 +52,7 @@ export class NotificationsService {
   //   return `This action updates a #${id} notification`;
   // }
 
-  // async remove(id: number) {
-  //   return `This action removes a #${id} notification`;
-  // }
+  async remove(id: number) {
+    return await this.notificationsRepository.delete(id);
+  }
 }

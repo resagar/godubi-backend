@@ -32,11 +32,17 @@ export class Notification {
   @Column()
   admin: number;
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @OneToOne(() => Order)
+  @OneToOne(() => Order, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'orders_id' })
   order: Order;
 

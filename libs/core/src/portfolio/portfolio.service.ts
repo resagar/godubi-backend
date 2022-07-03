@@ -48,7 +48,7 @@ export class PortfolioService {
     return await this.portfolioRepository.update(criteria, updatePortfolioDto);
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} portfolio`;
-  // }
+  async remove(id: number) {
+    return await this.portfolioRepository.delete(id);
+  }
 }

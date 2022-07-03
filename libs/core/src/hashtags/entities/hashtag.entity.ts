@@ -26,7 +26,10 @@ export class Hashtag {
   @Column({ nullable: true })
   icon: string;
 
-  @ManyToMany(() => Category, (category) => category.hashtags)
+  @ManyToMany(() => Category, (category) => category.hashtags, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinTable({
     name: 'categories_hashtags',
     joinColumn: {
@@ -39,7 +42,7 @@ export class Hashtag {
   categories: Category[];
 
   @ManyToMany(() => Service, (service) => service.hashtags, {
-    cascade: true,
+    onDelete: 'CASCADE',
   })
   @JoinTable({
     name: 'hashtags_services',

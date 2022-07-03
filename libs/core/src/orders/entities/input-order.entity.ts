@@ -17,11 +17,16 @@ export class InputOrder {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Input, (input) => input.inputOrders)
+  @ManyToOne(() => Input, (input) => input.inputOrders, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'inputs_id' })
   input: Input;
 
-  @ManyToOne(() => Order, (order) => order.inputOrders)
+  @ManyToOne(() => Order, (order) => order.inputOrders, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'orders_id' })
   order: Order;
 

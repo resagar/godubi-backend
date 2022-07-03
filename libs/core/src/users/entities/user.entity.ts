@@ -88,6 +88,7 @@ export class User {
 
   @OneToOne(() => Worker, (worker) => worker.user, {
     cascade: true,
+    onDelete: 'CASCADE',
   })
   worker: Worker;
 

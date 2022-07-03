@@ -32,18 +32,25 @@ export class Post {
   // @Column({ name: 'order_id' })
   // orderId: number;
 
-  @ManyToOne(() => Order, (order) => order.post)
+  @ManyToOne(() => Order, (order) => order.post, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'order_id' })
   order: Order;
 
   // @Column({ name: 'user_id' })
   // userId: number;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @OneToMany(() => Comment, (comment) => comment.post)
+  @OneToMany(() => Comment, (comment) => comment.post, {
+    onDelete: 'CASCADE',
+  })
   comments: Comment[];
 
   @CreateDateColumn({ name: 'created_at' })

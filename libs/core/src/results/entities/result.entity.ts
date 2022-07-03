@@ -25,7 +25,9 @@ export class Result {
   @Column()
   icon: string;
 
-  @ManyToMany(() => Service, (service) => service.results)
+  @ManyToMany(() => Service, (service) => service.results, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable({
     name: 'results_services',
     joinColumn: {

@@ -17,11 +17,16 @@ export class WorkerOrder {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Order, (order) => order.workerOrders)
+  @ManyToOne(() => Order, (order) => order.workerOrders, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'orders_id' })
   order: Order;
 
-  @ManyToOne(() => Worker, (worker) => worker.workerOrders)
+  @ManyToOne(() => Worker, (worker) => worker.workerOrders, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'workers_id' })
   worker: Worker;
 
