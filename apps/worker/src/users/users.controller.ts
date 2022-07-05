@@ -30,7 +30,7 @@ export class UsersController {
 
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('Worker')
+  @Roles('worker')
   findAll(@Request() req: UserAuthInterface) {
     return this.usersService.findAll(req.user.id);
   }
@@ -42,7 +42,7 @@ export class UsersController {
 
   @Patch()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('Worker')
+  @Roles('worker')
   update(
     @Request() req: UserAuthInterface,
     @Body() updateUserDto: UpdateUserDto,

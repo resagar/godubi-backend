@@ -19,25 +19,25 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  @Roles('Worker')
+  @Roles('worker')
   create(@Body() createPostDto: CreatePostDto) {
     return this.postsService.create(createPostDto);
   }
 
   @Get()
-  @Roles('Worker')
+  @Roles('worker')
   findAll() {
     return this.postsService.findAll();
   }
 
   @Get(':id')
-  @Roles('Worker')
+  @Roles('worker')
   findOne(@Param('id') id: string) {
     return this.postsService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles('Worker')
+  @Roles('worker')
   update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
     return this.postsService.update(+id, updatePostDto);
   }

@@ -20,30 +20,31 @@ export class WorkersController {
   constructor(private readonly workersService: WorkersService) {}
 
   @Post()
-  @Roles('Admin')
+  @Roles('admin')
   create(@Body() createWorkerDto: CreateWorkerDto) {
     return this.workersService.create(createWorkerDto);
   }
 
   @Get()
-  @Roles('Admin')
+  @Roles('admin')
   findAll() {
     return this.workersService.findAll();
   }
 
   @Get(':id')
-  @Roles('Admin')
+  @Roles('admin')
   findOne(@Param('id') id: string) {
     return this.workersService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles('Admin')
+  @Roles('admin')
   update(@Param('id') id: string, @Body() updateWorkerDto: UpdateWorkerDto) {
     return this.workersService.update(+id, updateWorkerDto);
   }
 
   @Delete(':id')
+  @Roles('admin')
   remove(@Param('id') id: string) {
     return this.workersService.remove(+id);
   }

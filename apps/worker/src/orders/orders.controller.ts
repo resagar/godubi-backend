@@ -28,7 +28,7 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  @Roles('Worker')
+  @Roles('worker')
   create(
     @Body()
     createDto: CreateOrderDto | CreateInputOrderDto | CreateWorkerOrderDto,
@@ -45,7 +45,7 @@ export class OrdersController {
   }
 
   @Get()
-  @Roles('Worker')
+  @Roles('worker')
   findAll(
     @Query() query: GetOrdersQueryDto,
     @Request() req: UserAuthInterface,
@@ -59,7 +59,7 @@ export class OrdersController {
   }
 
   @Patch(':id')
-  @Roles('Worker')
+  @Roles('worker')
   update(
     @Param('id') id: string,
     @Body() updateOrderDto: UpdateOrderWorkerDto,

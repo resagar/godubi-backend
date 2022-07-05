@@ -20,25 +20,25 @@ export class InputsController {
   constructor(private readonly inputsService: InputsService) {}
 
   @Post()
-  @Roles('Admin')
+  @Roles('admin')
   create(@Body() createInputDto: CreateInputDto) {
     return this.inputsService.create(createInputDto);
   }
 
   @Get()
-  @Roles('Admin')
+  @Roles('admin')
   findAll() {
     return this.inputsService.findAll();
   }
 
   @Get(':id')
-  @Roles('Admin')
+  @Roles('admin')
   findOne(@Param('id') id: string) {
     return this.inputsService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles('Admin')
+  @Roles('admin')
   update(@Param('id') id: string, @Body() updateInputDto: UpdateInputDto) {
     return this.inputsService.update(+id, updateInputDto);
   }

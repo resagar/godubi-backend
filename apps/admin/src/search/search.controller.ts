@@ -18,7 +18,7 @@ export class SearchController {
   ) {}
 
   @Post()
-  @Roles('Admin')
+  @Roles('admin')
   async search(@Body('query') search: string) {
     const categories = await this.categoriesServices.findAllBySearch(search);
     const hashtags = await this.hashtagsService.findAllBySearch(search);

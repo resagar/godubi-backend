@@ -20,30 +20,31 @@ export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
   @Post()
-  @Roles('Admin')
+  @Roles('admin')
   create(@Body() createItemDto: CreateItemDto) {
     return this.itemsService.create(createItemDto);
   }
 
   @Get()
-  @Roles('Admin')
+  @Roles('admin')
   findAll() {
     return this.itemsService.findAll();
   }
 
   @Get(':id')
-  @Roles('Admin')
+  @Roles('admin')
   findOne(@Param('id') id: string) {
     return this.itemsService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles('Admin')
+  @Roles('admin')
   update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
     return this.itemsService.update(+id, updateItemDto);
   }
 
   @Delete(':id')
+  @Roles('admin')
   remove(@Param('id') id: string) {
     return this.itemsService.remove(+id);
   }

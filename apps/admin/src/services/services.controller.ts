@@ -20,30 +20,31 @@ export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
   @Post()
-  @Roles('Admin')
+  @Roles('admin')
   create(@Body() createServiceDto: CreateServiceDto) {
     return this.servicesService.create(createServiceDto);
   }
 
   @Get()
-  @Roles('Admin')
+  @Roles('admin')
   findAll() {
     return this.servicesService.findAll();
   }
 
   @Get(':id')
-  @Roles('Admin')
+  @Roles('admin')
   findOne(@Param('id') id: string) {
     return this.servicesService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles('Admin')
+  @Roles('admin')
   update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
     return this.servicesService.update(+id, updateServiceDto);
   }
 
   @Delete(':id')
+  @Roles('admin')
   remove(@Param('id') id: string) {
     return this.servicesService.remove(+id);
   }

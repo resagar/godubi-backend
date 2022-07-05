@@ -20,25 +20,25 @@ export class HashtagsController {
   constructor(private readonly hashtagsService: HashtagsService) {}
 
   @Post()
-  @Roles('Admin')
+  @Roles('admin')
   create(@Body() createHashtagDto: CreateHashtagDto) {
     return this.hashtagsService.create(createHashtagDto);
   }
 
   @Get()
-  @Roles('Admin')
+  @Roles('admin')
   findAll() {
     return this.hashtagsService.findAll();
   }
 
   @Get(':id')
-  @Roles('Admin')
+  @Roles('admin')
   findOne(@Param('id') id: string) {
     return this.hashtagsService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles('Admin')
+  @Roles('admin')
   update(@Param('id') id: string, @Body() updateHashtagDto: UpdateHashtagDto) {
     return this.hashtagsService.update(+id, updateHashtagDto);
   }

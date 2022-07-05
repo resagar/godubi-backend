@@ -23,7 +23,7 @@ export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
   @Post()
-  @Roles('Worker')
+  @Roles('worker')
   create(@Body() createServiceDto: CreateServiceDto | CreateServiceWorkerDto) {
     if (createServiceDto['workerService'] != undefined) {
       return this.servicesService.createWorkerService(
@@ -34,19 +34,19 @@ export class ServicesController {
   }
 
   @Get()
-  @Roles('Worker')
+  @Roles('worker')
   findAll() {
     return this.servicesService.findAll();
   }
 
   @Get(':id')
-  @Roles('Worker')
+  @Roles('worker')
   findOne(@Param('id') id: string) {
     return this.servicesService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles('Worker')
+  @Roles('worker')
   update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
     return this.servicesService.update(+id, updateServiceDto);
   }

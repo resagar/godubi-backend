@@ -23,18 +23,19 @@ export class AuthService {
 
   async login(user: User) {
     const roles = this.addRoles(user.admin === 1, user.isWorker === 1);
-    const payload = { email: user.email, sub: user.id, roles: roles };
+    const payload = { email: user.email, sub: user.id, roles };
     const ability = this.addAbility(user.admin, user.isWorker);
     return {
-      user: { ...user, ability, roles },
+      user: { ...user, ability, role: roles },
       token: this.jwtService.sign(payload),
     };
   }
 
   addRoles(admin: boolean, worker: boolean): string[] {
     const roles: string[] = [];
-    if (admin) roles.push('Admin');
-    if (worker) roles.push('Worker');
+    if (!admin && !worker) roles.push('client');
+    if (admin) roles.push('admin');
+    if (worker) roles.push('worker');
     return roles;
   }
 

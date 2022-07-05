@@ -27,7 +27,7 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  @Roles('Admin')
+  @Roles('admin')
   create(
     @Body()
     createDto: CreateOrderDto | CreateInputOrderDto | CreateWorkerOrderDto,
@@ -44,19 +44,19 @@ export class OrdersController {
   }
 
   @Get()
-  @Roles('Admin')
+  @Roles('admin')
   findAll(@Query() query: GetOrdersQueryDto) {
     return this.ordersService.findAll(query);
   }
 
   @Get(':id')
-  @Roles('Admin')
+  @Roles('admin')
   findOne(@Param('id') id: string) {
     return this.ordersService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles('Admin')
+  @Roles('admin')
   update(
     @Param('id') id: string,
     @Body() updateOrderAdminDto: UpdateOrderAdminDto,
@@ -65,6 +65,7 @@ export class OrdersController {
   }
 
   @Delete(':id')
+  @Roles('admin')
   remove(@Param('id') id: string) {
     return this.ordersService.remove(+id);
   }

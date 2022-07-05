@@ -19,7 +19,7 @@ export class WorkersController {
   constructor(private readonly workersService: WorkersService) {}
 
   @Post()
-  @Roles('Worker', 'Admin')
+  @Roles('worker', 'admin')
   create(@Body() createWorkerDto: CreateWorkerDto) {
     createWorkerDto['status'] = 'Pending';
     return this.workersService.create(createWorkerDto);
@@ -32,7 +32,7 @@ export class WorkersController {
   // }
 
   @Get()
-  @Roles('Worker', 'Admin')
+  @Roles('worker', 'admin')
   findOne(@Request() req: UserAuthInterface) {
     return this.workersService.findOne(+req.user.id);
   }

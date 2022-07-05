@@ -30,31 +30,31 @@ export class CategoriesController {
   ) {}
 
   @Post()
-  @Roles('Admin')
+  @Roles('admin')
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create(createCategoryDto);
   }
 
   @Get()
-  @Roles('Admin')
+  @Roles('admin')
   async findAll(@Query() query: GetCategoriesQueryDto) {
     return this.categoriesService.findAll(query);
   }
 
   @Get(':id')
-  @Roles('Admin')
+  @Roles('admin')
   async findOne(@Param('id') id: string) {
     return this.categoriesService.findOne(+id);
   }
 
   @Get(':id/services')
-  @Roles('Admin')
+  @Roles('admin')
   findServicesByCategoryId(@Param('id') id: string) {
     return this.servicesService.findOneByCategoryId(+id);
   }
 
   @Patch(':id')
-  @Roles('Admin')
+  @Roles('admin')
   async update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,

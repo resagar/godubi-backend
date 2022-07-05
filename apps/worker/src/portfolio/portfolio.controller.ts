@@ -20,25 +20,25 @@ export class PortfolioController {
   constructor(private readonly portfolioService: PortfolioService) {}
 
   @Post()
-  @Roles('Worker')
+  @Roles('worker')
   create(@Body() createPortfolioDto: CreatePortfolioDto) {
     return this.portfolioService.create(createPortfolioDto);
   }
 
   @Get()
-  @Roles('Worker')
+  @Roles('worker')
   findAll() {
     return this.portfolioService.findAll();
   }
 
   @Get(':id')
-  @Roles('Worker')
+  @Roles('worker')
   findOne(@Param('id') id: string) {
     return this.portfolioService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles('Worker')
+  @Roles('worker')
   update(
     @Param('id') id: string,
     @Body() updatePortfolioDto: UpdatePortfolioDto,
