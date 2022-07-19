@@ -1,11 +1,11 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
-  CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { Input } from '@core/inputs/entities/input.entity';
 
@@ -49,9 +49,20 @@ export class Option {
   })
   inputs: Input[];
 
-  @CreateDateColumn({ name: 'created_at' })
+  @Column({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @Column({ name: 'updated_at' })
   updatedAt: Date;
+
+  @BeforeInsert()
+  private setCreateDate(): void {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
+
+  @BeforeUpdate()
+  private setUpdateDate(): void {
+    this.updatedAt = new Date();
+  }
 }

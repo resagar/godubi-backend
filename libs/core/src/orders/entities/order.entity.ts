@@ -1,12 +1,12 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { Post } from '@core/posts/entities/post.entity';
 import { Service } from '@core/services/entities/service.entity';
@@ -58,7 +58,7 @@ export class Order {
     cascade: true,
     onDelete: 'CASCADE',
   })
-  post: Post;
+  post: Post[];
 
   @OneToMany(() => InputOrder, (inputOrder) => inputOrder.order, {
     cascade: true,
@@ -85,9 +85,20 @@ export class Order {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @Column({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @Column({ name: 'updated_at' })
   updatedAt: Date;
+
+  @BeforeInsert()
+  private setCreateDate(): void {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
+
+  @BeforeUpdate()
+  private setUpdateDate(): void {
+    this.updatedAt = new Date();
+  }
 }

@@ -17,7 +17,9 @@ export class PortfolioService {
     const options: FindManyOptions<Portfolio> = {
       relations: {
         service: true,
-        worker: true,
+        worker: {
+          user: true,
+        },
       },
     };
     return await this.portfolioServiceCore.findAll(options);
@@ -27,7 +29,9 @@ export class PortfolioService {
     const options: FindOneOptions<Portfolio> = {
       relations: {
         service: true,
-        worker: true,
+        worker: {
+          user: true,
+        },
       },
       where: {
         id,

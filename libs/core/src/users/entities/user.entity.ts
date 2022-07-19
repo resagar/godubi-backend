@@ -1,11 +1,12 @@
 import {
+  BeforeInsert,
+  BeforeRecover,
+  BeforeUpdate,
   Column,
-  CreateDateColumn,
   Entity,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { Worker } from '@core/workers/entities/worker.entity';
 import { Order } from '@core/orders/entities/order.entity';
@@ -81,7 +82,7 @@ export class User {
   languages: string;
 
   @Column({ nullable: true })
-  birthday: string;
+  birthday: Date;
 
   @Column({ nullable: true })
   website: string;
@@ -95,9 +96,27 @@ export class User {
   @OneToMany(() => Order, (order) => order.user)
   orders: Order;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @Column({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @Column({ name: 'updated_at' })
   updatedAt: Date;
+
+  @BeforeInsert()
+  private setCreateDate(): void {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
+
+  @BeforeUpdate()
+  private setUpdateDate(): void {
+    this.updatedAt = new Date();
+  }
+
+  public transformAvatarBufferToString() {
+    if (this.avatar) {
+      const buff = Buffer.from(this.avatar);
+      this.avatar = buff.toString();
+    }
+  }
 }

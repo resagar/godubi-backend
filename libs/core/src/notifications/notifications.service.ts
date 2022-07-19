@@ -20,32 +20,40 @@ export class NotificationsService {
   }
 
   async findAll(userId?: number) {
-    return await this.notificationsRepository.find({
-      relations: {
-        user: true,
-        order: true,
-      },
-      where: {
-        user: {
-          id: userId,
+    const notifications: Notification[] =
+      await this.notificationsRepository.find({
+        relations: {
+          user: true,
+          order: true,
         },
-      },
-    });
+        where: {
+          user: {
+            id: userId,
+          },
+        },
+      });
+    notifications.map((notification) =>
+      notification.user.transformAvatarBufferToString(),
+    );
+    return notifications;
   }
 
   async findOne(id: number, userId?: number) {
-    return await this.notificationsRepository.findOne({
-      relations: {
-        user: true,
-        order: true,
-      },
-      where: {
-        id,
-        user: {
-          id: userId,
+    const notifications: Notification =
+      await this.notificationsRepository.findOne({
+        relations: {
+          user: true,
+          order: true,
         },
-      },
-    });
+        where: {
+          id,
+          user: {
+            id: userId,
+          },
+        },
+      });
+    notifications.user.transformAvatarBufferToString();
+    return notifications;
   }
 
   // async update(id: number, updateNotificationDto: UpdateNotificationDto) {

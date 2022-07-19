@@ -45,8 +45,8 @@ export class OrdersService {
     return newWorkerOrder;
   }
 
-  async findAll(where?: FindOptionsWhere<Order> | undefined) {
-    return await this.ordersRepository.find({
+  async findAll(limit = 10, where?: FindOptionsWhere<Order> | undefined) {
+    const orders: Order[] = await this.ordersRepository.find({
       order: {
         createdAt: 'DESC',
       },
@@ -71,7 +71,21 @@ export class OrdersService {
         },
       },
       where,
+      take: limit,
     });
+    orders.map((order) => {
+      order?.user.transformAvatarBufferToString();
+      order?.workerOrders.map((worker) =>
+        worker?.worker.user.transformAvatarBufferToString(),
+      );
+      order?.post.map((post) => {
+        post?.user.transformAvatarBufferToString();
+        post?.comments.map((comment) =>
+          comment?.user.transformAvatarBufferToString(),
+        );
+      });
+    });
+    return orders;
   }
 
   async findOne(where?: FindOptionsWhere<Order> | undefined) {

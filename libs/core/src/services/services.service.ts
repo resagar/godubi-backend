@@ -33,7 +33,7 @@ export class ServicesService {
   }
 
   async findAll() {
-    return await this.servicesRepository.find({
+    const services: Service[] = await this.servicesRepository.find({
       order: {
         priority: 'ASC',
       },
@@ -51,10 +51,16 @@ export class ServicesService {
         results: true,
       },
     });
+    services.map((service) => {
+      service?.workers.map((worker) =>
+        worker?.user.transformAvatarBufferToString(),
+      );
+    });
+    return services;
   }
 
   async findOne(id: number) {
-    return await this.servicesRepository.findOne({
+    const service: Service = await this.servicesRepository.findOne({
       relations: {
         category: true,
         hashtags: true,
@@ -72,10 +78,14 @@ export class ServicesService {
         id,
       },
     });
+    service.workers.map((worker) =>
+      worker?.user.transformAvatarBufferToString(),
+    );
+    return service;
   }
 
   async findOneByCategoryId(id: number) {
-    return await this.servicesRepository.find({
+    const services: Service[] = await this.servicesRepository.find({
       relations: {
         category: true,
         hashtags: true,
@@ -95,6 +105,12 @@ export class ServicesService {
         },
       },
     });
+    services.map((service) => {
+      service?.workers.map((worker) =>
+        worker?.user.transformAvatarBufferToString(),
+      );
+    });
+    return services;
   }
 
   async update(id: number, updateServiceDto: UpdateServiceDto) {

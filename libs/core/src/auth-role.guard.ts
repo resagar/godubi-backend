@@ -16,10 +16,10 @@ export class RolesGuard implements CanActivate {
   }
 }
 
-const matchRoles = (roles: string[], userRoles: string[]) => {
+const matchRoles = (roles: string[], userRoles: string) => {
   let next = false;
-  roles.map((role, i) => {
-    if (role === userRoles[i]) {
+  roles.map((role) => {
+    if (role === userRoles) {
       next = true;
     }
   });

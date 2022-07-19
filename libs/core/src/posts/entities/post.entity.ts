@@ -1,12 +1,12 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
 import { Comment } from '../comments/entities';
@@ -52,10 +52,20 @@ export class Post {
     onDelete: 'CASCADE',
   })
   comments: Comment[];
-
-  @CreateDateColumn({ name: 'created_at' })
+  @Column({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @Column({ name: 'updated_at' })
   updatedAt: Date;
+
+  @BeforeInsert()
+  private setCreateDate(): void {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
+
+  @BeforeUpdate()
+  private setUpdateDate(): void {
+    this.updatedAt = new Date();
+  }
 }

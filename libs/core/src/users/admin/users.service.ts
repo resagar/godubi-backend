@@ -21,33 +21,52 @@ export class UsersService {
   }
 
   async findAll() {
-    return await this.usersRepository.find({
+    const user: User[] = await this.usersRepository.find({
       relations: {
         worker: {
           services: true,
         },
       },
     });
+    user.map((user) => {
+      user.transformAvatarBufferToString();
+    });
+    return user;
   }
 
   async findOne(id: number) {
-    return await this.usersRepository.findOne({
+    const user: User = await this.usersRepository.findOne({
       relations: {
         worker: true,
+        orders: {
+          user: true,
+          workerOrders: {
+            worker: {
+              user: true,
+            },
+          },
+        },
       },
       where: {
         id,
       },
     });
+    user.transformAvatarBufferToString();
+    return user;
   }
 
-  async findByEmail(email: string) {
-    return await this.usersRepository.findOne({
-      where: {
-        email: email,
-      },
-    });
-  }
+  // async findByEmail(email: string) {
+  // const user: User = await this.usersRepository.findOne({
+  // where: {
+  // email: email,
+  // },
+  // });
+  // if (user.avatar) {
+  // const buff = Buffer.from(user.avatar);
+  // user.avatar = buff.toString();
+  // }
+  // return user;
+  // }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     return await this.usersRepository.update(id, updateUserDto);

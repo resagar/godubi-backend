@@ -16,7 +16,7 @@ export class CreateOrderDto {
   orderDescription?: string;
   website?: string;
   orderCost?: number;
-  post: Post;
+  post: Post[];
   inputs: Input[];
   workers: Worker[];
   service: Service;

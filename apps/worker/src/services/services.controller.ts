@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -16,21 +17,37 @@ import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 import { ServicesService } from '@core/services/services.service';
 import { Roles } from '@core/roles.decorator';
 import { RolesGuard } from '@core/auth-role.guard';
+import { UserAuthInterface } from '@core/auth/userAuth.interface';
+import { User } from '@core/users/entities/user.entity';
+import { UsersService } from '@core/users/users.service';
 
 @Controller('api/services')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class ServicesController {
-  constructor(private readonly servicesService: ServicesService) {}
+  constructor(
+    private readonly servicesService: ServicesService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @Post()
   @Roles('worker')
-  create(@Body() createServiceDto: CreateServiceDto | CreateServiceWorkerDto) {
+  async create(
+    @Body() createServiceDto: CreateServiceDto | CreateServiceWorkerDto,
+    @Request() req: UserAuthInterface,
+  ) {
     if (createServiceDto['workerService'] != undefined) {
-      return this.servicesService.createWorkerService(
-        <CreateServiceWorkerDto>createServiceDto,
+      const user: User[] = await this.usersService.findAll(req.user.id);
+      const createWorkerServiceDto: CreateServiceWorkerDto = <
+        CreateServiceWorkerDto
+      >createServiceDto;
+      createWorkerServiceDto.workerService.map(
+        (workerService) => (workerService.worker = user[0].worker.id),
+      );
+      return await this.servicesService.createWorkerService(
+        createWorkerServiceDto,
       );
     }
-    return this.servicesService.create(createServiceDto);
+    return await this.servicesService.create(createServiceDto);
   }
 
   @Get()

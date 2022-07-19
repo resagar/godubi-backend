@@ -13,6 +13,7 @@ import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 import { UsersService } from '@core/users/users.service';
 import { Roles } from '@core/roles.decorator';
 import { RolesGuard } from '@core/auth-role.guard';
+import { User } from '@core/users/entities/user.entity';
 
 @Controller('api/users')
 export class UsersController {
@@ -31,8 +32,11 @@ export class UsersController {
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('worker')
-  findAll(@Request() req: UserAuthInterface) {
-    return this.usersService.findAll(req.user.id);
+  async findAll(@Request() req: UserAuthInterface) {
+    const user: User[] = await this.usersService.findAll(req.user.id);
+    const buff = Buffer.from(user[0].avatar);
+    user[0].avatar = buff.toString();
+    return user;
   }
 
   // @Get(':id')

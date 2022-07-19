@@ -21,7 +21,7 @@ export class UsersService {
   }
 
   async findAll(userId: number) {
-    return await this.usersRepository.find({
+    const user: User[] = await this.usersRepository.find({
       relations: {
         worker: {
           services: true,
@@ -31,6 +31,8 @@ export class UsersService {
         id: userId,
       },
     });
+    user.map((user) => user.transformAvatarBufferToString());
+    return user;
   }
 
   // async findOne(id: number) {
@@ -45,11 +47,23 @@ export class UsersService {
   // }
 
   async findByEmail(email: string) {
-    return await this.usersRepository.findOne({
+    const user: User = await this.usersRepository.findOne({
       where: {
         email: email,
       },
     });
+    user.transformAvatarBufferToString();
+    return user;
+  }
+
+  async findByUsername(username: string) {
+    const user: User = await this.usersRepository.findOne({
+      where: {
+        username,
+      },
+    });
+    user.transformAvatarBufferToString();
+    return user;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {

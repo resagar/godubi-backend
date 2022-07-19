@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '@core/users/users.service';
@@ -11,8 +11,15 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.usersService.findByEmail(email);
+  async validateUser(password: string, username: string): Promise<any> {
+    let user: User;
+    if (username.includes('@'))
+      user = await this.usersService.findByEmail(username);
+    if (!username.includes('@'))
+      user = await this.usersService.findByUsername(username);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
     const validatePass = compare(password, user.password);
     if (validatePass) {
       delete user.password;
@@ -31,12 +38,12 @@ export class AuthService {
     };
   }
 
-  addRoles(admin: boolean, worker: boolean): string[] {
-    const roles: string[] = [];
-    if (!admin && !worker) roles.push('client');
-    if (admin) roles.push('admin');
-    if (worker) roles.push('worker');
-    return roles;
+  addRoles(admin: boolean, worker: boolean): string {
+    let role = '';
+    if (!admin && !worker) role = 'client';
+    if (admin) role = 'admin';
+    if (worker) role = 'worker';
+    return role;
   }
 
   addAbility(admin: number, worker: number) {

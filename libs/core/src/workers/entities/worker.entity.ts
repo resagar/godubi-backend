@@ -1,6 +1,7 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
@@ -8,7 +9,6 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { User } from '@core/users/entities/user.entity';
 import { Service } from '@core/services/entities/service.entity';
@@ -62,9 +62,20 @@ export class Worker {
   @OneToMany(() => Portfolio, (portfolio) => portfolio.worker)
   portfolios: Portfolio;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @Column({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @Column({ name: 'updated_at' })
   updatedAt: Date;
+
+  @BeforeInsert()
+  private setCreateDate(): void {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
+
+  @BeforeUpdate()
+  private setUpdateDate(): void {
+    this.updatedAt = new Date();
+  }
 }

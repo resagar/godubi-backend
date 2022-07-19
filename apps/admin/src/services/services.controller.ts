@@ -8,7 +8,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { CreateServiceDto, UpdateServiceDto } from '@core/services/dto';
+import {
+  CreateServiceDto,
+  CreateServiceWorkerDto,
+  UpdateServiceDto,
+} from '@core/services/dto';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 import { ServicesService } from '@core/services/services.service';
 import { RolesGuard } from '@core/auth-role.guard';
@@ -21,8 +25,12 @@ export class ServicesController {
 
   @Post()
   @Roles('admin')
-  create(@Body() createServiceDto: CreateServiceDto) {
-    return this.servicesService.create(createServiceDto);
+  create(@Body() createDto: CreateServiceDto | CreateServiceWorkerDto) {
+    if (createDto['workerService'] != undefined)
+      return this.servicesService.createWorkerService(
+        <CreateServiceWorkerDto>createDto,
+      );
+    return this.servicesService.create(<CreateServiceDto>createDto);
   }
 
   @Get()

@@ -38,7 +38,7 @@ export class OrdersService {
     query.worker
       ? (where.workerOrders = { worker: { id: query.worker } })
       : null;
-    return await this.ordersServiceCore.findAll(where);
+    return await this.ordersServiceCore.findAll(query.limit, where);
   }
 
   async findOne(id: number, userId: number) {

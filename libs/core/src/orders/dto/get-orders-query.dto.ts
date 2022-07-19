@@ -4,4 +4,5 @@ export class GetOrdersQueryDto {
   public serviceId?: number | undefined;
   public worker?: number | undefined;
   public client?: number | undefined;
+  public limit?: number | undefined;
 }

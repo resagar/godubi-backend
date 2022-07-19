@@ -25,11 +25,21 @@ export class PortfolioService {
   }
 
   async findAll(options: FindManyOptions<Portfolio>) {
-    return await this.portfolioRepository.find(options);
+    const portfolios: Portfolio[] = await this.portfolioRepository.find(
+      options,
+    );
+    portfolios.map((porfolio) =>
+      porfolio.worker.user.transformAvatarBufferToString(),
+    );
+    return portfolios;
   }
 
   async findOne(options: FindOneOptions<Portfolio>) {
-    return await this.portfolioRepository.findOne(options);
+    const portfolio: Portfolio = await this.portfolioRepository.findOne(
+      options,
+    );
+    portfolio.worker.user.transformAvatarBufferToString();
+    return portfolio;
   }
 
   async update(

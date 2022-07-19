@@ -38,7 +38,7 @@ export class OrdersService {
     query.orderStatus ? (where.orderStatus = query.orderStatus) : null;
     query.created ? (where.createdAt = Like(query.created)) : null;
     query.client ? (where.user = { id: query.client }) : null;
-    return await this.ordersServiceCore.findAll(where);
+    return await this.ordersServiceCore.findAll(query.limit, where);
   }
 
   async findOne(id: number, userId: number) {
