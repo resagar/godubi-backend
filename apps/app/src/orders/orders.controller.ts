@@ -41,6 +41,11 @@ export class OrdersController {
     return this.ordersService.create(<CreateOrderDto>createDto);
   }
 
+  @Get('totals')
+  findTotalOrders(@Request() req: UserAuthInterface) {
+    return this.ordersService.getTotalOrders(req.user.id);
+  }
+
   @Get()
   findAll(
     @Query() query: GetOrdersQueryDto,

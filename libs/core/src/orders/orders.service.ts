@@ -7,12 +7,13 @@ import {
   UpdateOrderWorkerDto,
 } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, ObjectID, Repository } from 'typeorm';
+import { FindOptionsWhere, In, Not, ObjectID, Repository } from 'typeorm';
 
 import { Order } from './entities/order.entity';
 import { InputOrder } from './entities/input-order.entity';
 import { WorkerOrder } from '@core/orders/entities/worker-order.entity';
 import { CreateWorkerOrderDto } from '@core/orders/dto/create-worker-order.dto';
+import { OrderTotals } from './dto/get-totals-order.dto';
 
 @Injectable()
 export class OrdersService {
@@ -132,4 +133,76 @@ export class OrdersService {
   async remove(id: number) {
     return await this.ordersRepository.delete(id);
   }
+
+  async getTotalOrders(userId: number) {
+    const totalOrders = await this.ordersRepository.count({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+    });
+    const totalOrdersPending = await this.ordersRepository.count({
+      where: {
+        user: {
+          id: userId,
+        },
+        orderStatus: 'Pending',
+      },
+    });
+    const totalOrdersDone = await this.ordersRepository.count({
+      where: {
+        user: {
+          id: userId,
+        },
+        orderStatus: In(['Completed', 'Done', 'Complete']),
+      },
+    });
+    const totalOrdersCancel = await this.ordersRepository.count({
+      where: {
+        user: {
+          id: userId,
+        },
+        orderStatus: In(['Cancel', 'Canceled']),
+      },
+    });
+    const totalOrdersInProgress = await this.ordersRepository.count({
+      where: {
+        user: {
+          id: userId,
+        },
+        orderStatus: 'In Progress',
+      },
+    });
+    const orders = await this.ordersRepository.find({
+      select: { orderCost: true },
+      where: {
+        user: {
+          id: userId,
+        },
+        orderStatus: Not(In(['Cancel', 'Canceled'])),
+      },
+    });
+    const totalAmountInOrders = orders
+      .map((order) => order.orderCost)
+      .reduce((p, c) => p + c);
+
+    return new OrderTotals(
+      totalOrders,
+      totalOrdersPending,
+      totalOrdersDone,
+      totalOrdersCancel,
+      totalOrdersInProgress,
+      totalAmountInOrders,
+    );
+  }
 }
+
+// {
+//   "totalOrders": 49,
+//   "totalOrdersPending": 48,
+//   "totalOrdersDone": 0,
+//   "totalOrdersCancel": 0,
+//   "totalOrdersInProgress": 1,
+//   "totalAmountInOrders": 1600
+// }

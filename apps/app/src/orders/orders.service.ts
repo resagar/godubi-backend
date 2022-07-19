@@ -61,6 +61,10 @@ export class OrdersService {
     return await this.ordersServiceCore.update(where, updateOrderDto);
   }
 
+  async getTotalOrders(userId: number) {
+    return await this.ordersServiceCore.getTotalOrders(userId);
+  }
+
   // remove(id: number) {
   //   return `This action removes a #${id} order`;
   // }
