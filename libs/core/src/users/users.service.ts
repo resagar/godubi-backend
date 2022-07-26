@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
-import { Like, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { genSalt, hash } from 'bcrypt';
 
 @Injectable()
@@ -68,15 +68,6 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     return await this.usersRepository.update(id, updateUserDto);
-  }
-
-  async findAllBySearch(search: string) {
-    return await this.usersRepository.find({
-      where: {
-        isWorker: 1,
-        username: Like(search),
-      },
-    });
   }
 
   // remove(id: number) {

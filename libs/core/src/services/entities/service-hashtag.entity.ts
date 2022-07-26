@@ -6,19 +6,19 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity({ name: 'services_workers' })
-export class ServiceWorker {
+@Entity({ name: 'hashtags_services' })
+export class ServiceHashtagEntity {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ name: 'workers_id' })
-  worker: number;
 
   @Column({ name: 'services_id' })
   service: number;
 
-  @Column({ name: 'priority_type', default: 'normal' })
-  priorityType: string;
+  @Column({ name: 'hashtags_id' })
+  hashtag: number;
+
+  @Column({ nullable: true })
+  priority: number;
 
   @Column({ name: 'created_at' })
   createdAt: Date;

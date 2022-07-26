@@ -2,24 +2,21 @@ version: '3.7'
 services:
   app:
     container_name: godubi-app
-    image: registry.gitlab.com/zorrero/godubi-backend
-    command: node dist/apps/app/main
+    image: registry.gitlab.com/zorrero/godubi-backend:app
     env_file:
       - .env
     ports:
       - '8085:8085'
   worker:
     container_name: godubi-worker
-    image: registry.gitlab.com/zorrero/godubi-backend
-    command: node dist/apps/worker/main
+    image: registry.gitlab.com/zorrero/godubi-backend:worker
     env_file:
       - .env
     ports:
       - '8082:8082'
   admin:
     container_name: godubi-admin
-    image: registry.gitlab.com/zorrero/godubi-backend
-    command: node dist/apps/admin/main
+    image: registry.gitlab.com/zorrero/godubi-backend:admin
     env_file:
       - .env
     ports:

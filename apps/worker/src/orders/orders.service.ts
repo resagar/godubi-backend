@@ -58,15 +58,11 @@ export class OrdersService {
     updateOrderWorkerDto: UpdateOrderWorkerDto,
     userId: number,
   ) {
-    const where: FindOptionsWhere<Order> = {
+    return await this.ordersServiceCore.updateWorker(
       id,
-      workerOrders: {
-        worker: {
-          user: { id: userId },
-        },
-      },
-    };
-    return await this.ordersServiceCore.update(where, updateOrderWorkerDto);
+      userId,
+      updateOrderWorkerDto,
+    );
   }
 
   // remove(id: number) {

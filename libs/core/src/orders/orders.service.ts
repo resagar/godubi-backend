@@ -14,6 +14,7 @@ import { InputOrder } from './entities/input-order.entity';
 import { WorkerOrder } from '@core/orders/entities/worker-order.entity';
 import { CreateWorkerOrderDto } from '@core/orders/dto/create-worker-order.dto';
 import { OrderTotals } from './dto/get-totals-order.dto';
+import { Worker } from '@core/workers/entities/worker.entity';
 
 @Injectable()
 export class OrdersService {
@@ -24,6 +25,8 @@ export class OrdersService {
     private inputsOrdersRepository: Repository<InputOrder>,
     @InjectRepository(WorkerOrder)
     private workersOrdersRepository: Repository<WorkerOrder>,
+    @InjectRepository(Worker)
+    private workerRepository: Repository<Worker>,
   ) {}
 
   async create(createOrderDto: CreateOrderDto) {
@@ -46,7 +49,10 @@ export class OrdersService {
     return newWorkerOrder;
   }
 
-  async findAll(limit = 10, where?: FindOptionsWhere<Order> | undefined) {
+  async findAll(
+    limit?: number | undefined,
+    where?: FindOptionsWhere<Order> | undefined,
+  ) {
     const orders: Order[] = await this.ordersRepository.find({
       order: {
         createdAt: 'DESC',
@@ -72,17 +78,17 @@ export class OrdersService {
         },
       },
       where,
-      take: limit,
+      take: limit ?? null,
     });
     orders.map((order) => {
-      order?.user.transformAvatarBufferToString();
-      order?.workerOrders.map((worker) =>
-        worker?.worker.user.transformAvatarBufferToString(),
+      order.user?.transformAvatarBufferToString();
+      order.workerOrders.map((worker) =>
+        worker.worker.user?.transformAvatarBufferToString(),
       );
-      order?.post.map((post) => {
-        post?.user.transformAvatarBufferToString();
-        post?.comments.map((comment) =>
-          comment?.user.transformAvatarBufferToString(),
+      order.post.map((post) => {
+        post.user?.transformAvatarBufferToString();
+        post.comments.map((comment) =>
+          comment.user?.transformAvatarBufferToString(),
         );
       });
     });
@@ -90,7 +96,7 @@ export class OrdersService {
   }
 
   async findOne(where?: FindOptionsWhere<Order> | undefined) {
-    return await this.ordersRepository.findOne({
+    const order: Order = await this.ordersRepository.findOne({
       relations: {
         service: true,
         workerOrders: {
@@ -112,6 +118,18 @@ export class OrdersService {
       },
       where,
     });
+
+    order.user?.transformAvatarBufferToString();
+    order.workerOrders.map((worker) =>
+      worker.worker.user?.transformAvatarBufferToString(),
+    );
+    order.post.map((post) => {
+      post.user?.transformAvatarBufferToString();
+      post.comments.map((comment) =>
+        comment.user?.transformAvatarBufferToString(),
+      );
+    });
+    return order;
   }
 
   async update(
@@ -128,6 +146,36 @@ export class OrdersService {
     updateOrderDto: UpdateOrderDto | UpdateOrderWorkerDto | UpdateOrderAdminDto,
   ) {
     return await this.ordersRepository.update(criteria, updateOrderDto);
+  }
+
+  async updateWorker(
+    id: number,
+    userId: number,
+    updateOrderDto: UpdateOrderDto | UpdateOrderWorkerDto | UpdateOrderAdminDto,
+  ) {
+    const queryWorkerOrder = this.workersOrdersRepository
+      .createQueryBuilder()
+      .select(['workers_id'])
+      .where('orders_id = :orderId')
+      .andWhere((q) => {
+        const subQuery = q
+          .subQuery()
+          .select('id')
+          .from(Worker, 'worker')
+          .where('worker.users_id = :userId')
+          .getQuery();
+        return `workers_id = ${subQuery}`;
+      });
+
+    return await this.ordersRepository
+      .createQueryBuilder()
+      .update()
+      .set(updateOrderDto)
+      .where('id = :orderId')
+      .andWhere(`EXISTS (${queryWorkerOrder.getQuery()})`)
+      .setParameter('orderId', id)
+      .setParameter('userId', userId)
+      .execute();
   }
 
   async remove(id: number) {
@@ -197,12 +245,3 @@ export class OrdersService {
     );
   }
 }
-
-// {
-//   "totalOrders": 49,
-//   "totalOrdersPending": 48,
-//   "totalOrdersDone": 0,
-//   "totalOrdersCancel": 0,
-//   "totalOrdersInProgress": 1,
-//   "totalAmountInOrders": 1600
-// }

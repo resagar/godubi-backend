@@ -45,7 +45,7 @@ export class HashtagsService {
   async findAllBySearch(search: string) {
     return await this.hashtagsRepository.find({
       where: {
-        name: Like(search),
+        name: Like(`%${search}%`),
       },
     });
   }

@@ -14,19 +14,24 @@ import { UsersService } from '@core/users/users.service';
 import { Roles } from '@core/roles.decorator';
 import { RolesGuard } from '@core/auth-role.guard';
 import { User } from '@core/users/entities/user.entity';
+import { AuthService } from '@core/auth/auth.service';
 
 @Controller('api/users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto) {
     createUserDto.isWorker = 1;
     createUserDto.worker = {
       status: 'Pending',
       balance: 0,
     };
-    return this.usersService.create(createUserDto);
+    const user: User = await this.usersService.create(createUserDto);
+    return await this.authService.login(user);
   }
 
   @Get()

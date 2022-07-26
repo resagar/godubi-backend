@@ -44,6 +44,9 @@ export class Category {
 
   @Column({ width: 11 })
   public priority: number;
+  
+  @Column({ nullable: true })
+  highlight: number;
 
   @ManyToMany(() => Hashtag, (hashtag) => hashtag.categories, {
     onDelete: 'CASCADE',

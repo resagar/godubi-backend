@@ -13,15 +13,21 @@ import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 import { UsersService } from '@core/users/admin/users.service';
 import { RolesGuard } from '@core/auth-role.guard';
 import { Roles } from '@core/roles.decorator';
+import { AuthService } from '@core/auth/auth.service';
+import { User } from '@core/users/entities/user.entity';
 
 @Controller('api/users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto) {
     createUserDto.admin = 1;
-    return this.usersService.create(createUserDto);
+    const user: User = await this.usersService.create(createUserDto);
+    return await this.authService.login(user);
   }
 
   @Get()

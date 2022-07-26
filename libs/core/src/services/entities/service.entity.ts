@@ -54,6 +54,9 @@ export class Service {
   @Column({ nullable: true })
   priority: number;
 
+  @Column({ nullable: true })
+  highlight: number;
+
   @ManyToMany(() => Hashtag, (hashtag) => hashtag.services, {
     cascade: true,
     onDelete: 'CASCADE',

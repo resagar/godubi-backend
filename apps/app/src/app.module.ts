@@ -13,7 +13,7 @@ import { WorkersModule } from './workers/workers.module';
 import { PostsModule } from './posts/posts.module';
 import { LoginModule } from './login/login.module';
 import { NotificationsModule } from './notifications/notifications.module';
-import { SearchModule } from '../../admin/src/search/search.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [

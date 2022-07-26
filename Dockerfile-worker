@@ -9,7 +9,7 @@ RUN yarn install
 
 COPY . .
 
-ARG APP=app
+ARG APP=worker
 ENV APP=${APP}
 
 RUN yarn build ${APP}
@@ -29,3 +29,5 @@ RUN yarn install --production
 COPY . .
 
 COPY --from=builder /usr/src/app/dist ./dist
+
+CMD ["node", "dist/main"]

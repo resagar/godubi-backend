@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsNull, Like, Repository } from 'typeorm';
+import { In, IsNull, Like, Repository } from 'typeorm';
 
 import { Category } from './entities/category.entity';
 import {
@@ -33,6 +33,7 @@ export class CategoriesService {
       },
       where: {
         idParent: query.parent_id ?? IsNull(),
+        highlight: query.highlight ?? In([0, 1]),
       },
       take: query.limit_categories ?? null,
     });
@@ -60,7 +61,7 @@ export class CategoriesService {
   async findAllBySearch(search: string) {
     return await this.categoriesRepository.find({
       where: {
-        name: Like(search),
+        name: Like(`%${search}%`),
       },
     });
   }

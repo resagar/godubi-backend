@@ -42,8 +42,11 @@ export class CategoriesController {
   }
 
   @Get(':id/services')
-  findServicesByCategoryId(@Param('id') id: string) {
-    return this.servicesService.findOneByCategoryId(+id);
+  findServicesByCategoryId(
+    @Param('id') id: string,
+    @Query('highlight') highlight?: number | undefined,
+  ) {
+    return this.servicesService.findOneByCategoryId(+id, highlight);
   }
 
   @Patch(':id')

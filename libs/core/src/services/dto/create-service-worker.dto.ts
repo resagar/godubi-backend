@@ -5,5 +5,5 @@ export class CreateServiceWorkerDto {
 class WorkerService {
   public worker: number;
   public service: number;
-  priorityType: string;
+  public priorityType: string;
 }

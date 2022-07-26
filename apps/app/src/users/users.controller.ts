@@ -11,15 +11,20 @@ import { CreateUserDto, UpdateUserDto } from '@core/users/dto';
 import { UserAuthInterface } from '@core/auth/userAuth.interface';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
 import { UsersService } from '@core/users/users.service';
+import { AuthService } from '@core/auth/auth.service';
+import { User } from '@core/users/entities/user.entity';
 
 @Controller('api/users')
-@UseGuards(JwtAuthGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    const user: User = await this.usersService.create(createUserDto);
+    return await this.authService.login(user);
   }
 
   @Get()

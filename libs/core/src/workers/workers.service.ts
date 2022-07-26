@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWorkerDto, UpdateWorkerDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Worker } from './entities/worker.entity';
 
 @Injectable()
@@ -23,6 +23,9 @@ export class WorkersService {
         user: true,
         services: true,
         portfolios: true,
+        workerOrders: {
+          order: true,
+        },
       },
     });
     workers.map((worker) => worker?.user?.transformAvatarBufferToString());
@@ -35,11 +38,29 @@ export class WorkersService {
         user: true,
         services: true,
         portfolios: true,
+        workerOrders: {
+          order: true,
+        },
       },
       where: { id },
     });
     worker?.user?.transformAvatarBufferToString();
     return worker;
+  }
+
+  async findAllBySearch(search: string) {
+    const workers: Worker[] = await this.workersRepository.find({
+      relations: {
+        user: true,
+      },
+      where: {
+        user: {
+          username: Like(`%${search}%`),
+        },
+      },
+    });
+    workers.map((worker) => worker?.user?.transformAvatarBufferToString());
+    return workers;
   }
 
   async update(id: number, updateWorkerDto: UpdateWorkerDto) {

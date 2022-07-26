@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -20,6 +21,9 @@ import { RolesGuard } from '@core/auth-role.guard';
 import { UserAuthInterface } from '@core/auth/userAuth.interface';
 import { User } from '@core/users/entities/user.entity';
 import { UsersService } from '@core/users/users.service';
+import { CreateServiceHashtagDto } from '@core/services/dto/create-service-hashtag.dto';
+import { CreateServiceItemDto } from '@core/services/dto/create-service-item.dto';
+import { CreateServiceResultDto } from '@core/services/dto/create-service-result.dto';
 
 @Controller('api/services')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -32,14 +36,20 @@ export class ServicesController {
   @Post()
   @Roles('worker')
   async create(
-    @Body() createServiceDto: CreateServiceDto | CreateServiceWorkerDto,
+    @Body()
+    createDto:
+      | CreateServiceDto
+      | CreateServiceWorkerDto
+      | CreateServiceHashtagDto
+      | CreateServiceItemDto
+      | CreateServiceResultDto,
     @Request() req: UserAuthInterface,
   ) {
-    if (createServiceDto['workerService'] != undefined) {
+    if (createDto['workerService'] != undefined) {
       const user: User[] = await this.usersService.findAll(req.user.id);
       const createWorkerServiceDto: CreateServiceWorkerDto = <
         CreateServiceWorkerDto
-      >createServiceDto;
+      >createDto;
       createWorkerServiceDto.workerService.map(
         (workerService) => (workerService.worker = user[0].worker.id),
       );
@@ -47,13 +57,25 @@ export class ServicesController {
         createWorkerServiceDto,
       );
     }
-    return await this.servicesService.create(createServiceDto);
+    if (createDto['hashtagService'] != undefined)
+      return this.servicesService.createHashtagService(
+        <CreateServiceHashtagDto>createDto,
+      );
+    if (createDto['itemService'] != undefined)
+      return this.servicesService.createItemService(
+        <CreateServiceItemDto>createDto,
+      );
+    if (createDto['resultService'] != undefined)
+      return this.servicesService.createResultService(
+        <CreateServiceResultDto>createDto,
+      );
+    return await this.servicesService.create(createDto);
   }
 
   @Get()
   @Roles('worker')
-  findAll() {
-    return this.servicesService.findAll();
+  findAll(@Query('highlight') highlight?: number | undefined) {
+    return this.servicesService.findAll(highlight);
   }
 
   @Get(':id')
