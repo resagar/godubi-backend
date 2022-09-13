@@ -29,17 +29,14 @@ export class Post {
   @Column({ nullable: true })
   type: string;
 
-  // @Column({ name: 'order_id' })
-  // orderId: number;
-
   @ManyToOne(() => Order, (order) => order.post, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'order_id' })
   order: Order;
 
-  // @Column({ name: 'user_id' })
-  // userId: number;
+  @Column({ name: 'order_id' })
+  orderId: number;
 
   @ManyToOne(() => User, {
     cascade: true,
@@ -48,10 +45,14 @@ export class Post {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
+  @Column({ name: 'user_id' })
+  userId: number;
+
   @OneToMany(() => Comment, (comment) => comment.post, {
     onDelete: 'CASCADE',
   })
   comments: Comment[];
+
   @Column({ name: 'created_at' })
   createdAt: Date;
 

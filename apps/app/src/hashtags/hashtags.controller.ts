@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CreateHashtagDto, UpdateHashtagDto } from '@core/hashtags/dto';
@@ -22,8 +23,13 @@ export class HashtagsController {
   }
 
   @Get()
-  findAll() {
-    return this.hashtagsService.findAll();
+  findAll(
+    @Query('limit') limit = '10',
+    @Query('skip') skip = '0',
+    @Query('name') name: string,
+    @Query('created') created: Date,
+  ) {
+    return this.hashtagsService.findAll(+limit, +skip, name, created);
   }
 
   @Get(':id')

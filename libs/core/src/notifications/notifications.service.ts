@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateNotificationDto } from './dto/create-notification.dto';
+import {
+  CreateNotificationDto,
+  UpdateNotificationDto,
+} from '@core/notifications/dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Notification } from './entities/notification.entity';
 import { Repository } from 'typeorm';
@@ -11,7 +14,7 @@ export class NotificationsService {
     private notificationsRepository: Repository<Notification>,
   ) {}
 
-  async create(createNotificationDto: CreateNotificationDto) {
+  async create(createNotificationDto: CreateNotificationDto[]) {
     const newNotification = this.notificationsRepository.create(
       createNotificationDto,
     );
@@ -30,10 +33,11 @@ export class NotificationsService {
           user: {
             id: userId,
           },
+          read: 0,
         },
       });
     notifications.map((notification) =>
-      notification.user.transformAvatarBufferToString(),
+      notification.user?.transformAvatarBufferToString(),
     );
     return notifications;
   }
@@ -52,13 +56,13 @@ export class NotificationsService {
           },
         },
       });
-    notifications.user.transformAvatarBufferToString();
+    notifications.user?.transformAvatarBufferToString();
     return notifications;
   }
 
-  // async update(id: number, updateNotificationDto: UpdateNotificationDto) {
-  //   return `This action updates a #${id} notification`;
-  // }
+  async update(id: number, updateNotificationDto: UpdateNotificationDto) {
+    return await this.notificationsRepository.update(id, updateNotificationDto);
+  }
 
   async remove(id: number) {
     return await this.notificationsRepository.delete(id);

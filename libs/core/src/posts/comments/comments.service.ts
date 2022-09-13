@@ -18,12 +18,48 @@ export class CommentsService {
   }
 
   async findAll() {
-    return await this.commentsRepository.find();
+    const comments = await this.commentsRepository.find({
+      relations: {
+        user: true,
+      },
+    });
+    comments.map((comment) => {
+      comment?.user.transformAvatarBufferToString();
+    });
+    return comments;
   }
 
   async findOne(id: number) {
-    return await this.commentsRepository.findOne({
+    const comment = await this.commentsRepository.findOne({
+      relations: {
+        user: true,
+      },
       where: { id },
+    });
+    comment?.user.transformAvatarBufferToString();
+    return comment;
+  }
+
+  async getUserFromNotification(postId: number) {
+    return await this.commentsRepository.find({
+      relations: {
+        post: {
+          user: {
+            id: true,
+          },
+          order: {
+            id: true,
+          },
+        },
+        user: {
+          id: true,
+        },
+      },
+      where: {
+        post: {
+          id: postId,
+        },
+      },
     });
   }
 

@@ -1,6 +1,5 @@
 import {
   BeforeInsert,
-  BeforeRecover,
   BeforeUpdate,
   Column,
   Entity,
@@ -10,6 +9,9 @@ import {
 } from 'typeorm';
 import { Worker } from '@core/workers/entities/worker.entity';
 import { Order } from '@core/orders/entities/order.entity';
+import { Meet } from '@core/meets/entities/meet.entity';
+import { Guest } from '@core/guests/entities/guest.entity';
+import { TeamUser } from '@core/teams/entities/team-user.entity';
 
 @Entity({
   name: 'users',
@@ -95,6 +97,15 @@ export class User {
 
   @OneToMany(() => Order, (order) => order.user)
   orders: Order;
+
+  @OneToMany(() => Meet, (meet) => meet.user)
+  meets: Meet[];
+
+  @OneToMany(() => Guest, (guest) => guest.user)
+  guests: Guest[];
+
+  @OneToMany(() => TeamUser, (teamUser) => teamUser.user)
+  teamUsers: TeamUser[];
 
   @Column({ name: 'created_at' })
   createdAt: Date;

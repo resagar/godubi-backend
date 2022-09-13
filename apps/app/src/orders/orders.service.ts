@@ -58,7 +58,12 @@ export class OrdersService {
         id: userId,
       },
     };
-    return await this.ordersServiceCore.update(where, updateOrderDto);
+    return await this.ordersServiceCore.update(
+      where,
+      updateOrderDto,
+      id,
+      userId,
+    );
   }
 
   async getTotalOrders(userId: number) {

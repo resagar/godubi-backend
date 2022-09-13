@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, IsNull, Like, Repository } from 'typeorm';
+import { FindOptionsWhere, In, IsNull, Like, Repository } from 'typeorm';
 
 import { Category } from './entities/category.entity';
 import {
@@ -23,6 +23,22 @@ export class CategoriesService {
   }
 
   async findAll(query: GetCategoriesQueryDto) {
+    const {
+      name,
+      priority,
+      active,
+      parent_id,
+      highlight,
+      limit_categories,
+      limit_services,
+      skip,
+    } = query;
+    const where: FindOptionsWhere<Category> = {};
+    name ? (where.name = name) : null;
+    priority ? (where.priority = priority) : null;
+    active ? (where.active = active) : null;
+    parent_id ? (where.idParent = parent_id) : (where.idParent = IsNull());
+    highlight ? (where.highlight = highlight) : (where.highlight = In([0, 1]));
     const categories = await this.categoriesRepository.find({
       order: {
         priority: 'ASC',
@@ -31,13 +47,11 @@ export class CategoriesService {
         hashtags: true,
         services: true,
       },
-      where: {
-        idParent: query.parent_id ?? IsNull(),
-        highlight: query.highlight ?? In([0, 1]),
-      },
-      take: query.limit_categories ?? null,
+      where,
+      take: limit_categories ?? 10,
+      skip,
     });
-    if (query.limit_services) {
+    if (limit_services) {
       categories.map((category) => {
         category.services = category.services.slice(0, query.limit_services);
       });

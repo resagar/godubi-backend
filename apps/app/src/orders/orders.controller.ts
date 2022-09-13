@@ -65,7 +65,7 @@ export class OrdersController {
     @Body() updateOrderDto: UpdateOrderDto,
     @Request() req: UserAuthInterface,
   ) {
-    return this.ordersService.update(+id, updateOrderDto, req.user.id);
+    return this.ordersService.update(+id, updateOrderDto, +req.user.id);
   }
 
   // @Delete(':id')

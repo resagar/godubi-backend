@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from '@core/users/dto';
@@ -33,8 +34,26 @@ export class UsersController {
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
-  findAll() {
-    return this.usersService.findAll();
+  findAll(
+    @Query('limit') limit = '10',
+    @Query('skip') skip = '0',
+    @Query('username') username: string,
+    @Query('email') email: string,
+    @Query('country') country: string,
+    @Query('state') state: string,
+    @Query('city') city: string,
+    @Query('created') created: Date,
+  ) {
+    return this.usersService.findAll(
+      +limit,
+      +skip,
+      username,
+      email,
+      country,
+      state,
+      city,
+      created,
+    );
   }
 
   @Get(':id')

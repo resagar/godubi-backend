@@ -15,7 +15,7 @@ import {
   UpdateServiceDto,
 } from '@core/services/dto';
 import { JwtAuthGuard } from '@core/auth/jwt-auth.guard';
-import { ServicesService } from '@core/services/services.service';
+import { ServicesService } from '@core/services/worker/services.service';
 import { Roles } from '@core/roles.decorator';
 import { RolesGuard } from '@core/auth-role.guard';
 import { UserAuthInterface } from '@core/auth/userAuth.interface';
@@ -50,9 +50,10 @@ export class ServicesController {
       const createWorkerServiceDto: CreateServiceWorkerDto = <
         CreateServiceWorkerDto
       >createDto;
-      createWorkerServiceDto.workerService.map(
-        (workerService) => (workerService.worker = user[0].worker.id),
-      );
+      createWorkerServiceDto.workerService.map((workerService) => {
+        workerService.worker = user[0].worker.id;
+        workerService.status = 'pending';
+      });
       return await this.servicesService.createWorkerService(
         createWorkerServiceDto,
       );
@@ -74,8 +75,24 @@ export class ServicesController {
 
   @Get()
   @Roles('worker')
-  findAll(@Query('highlight') highlight?: number | undefined) {
-    return this.servicesService.findAll(highlight);
+  findAll(
+    @Query('limit') limit = '10',
+    @Query('skip') skip = '0',
+    @Query('name') name: string,
+    @Query('slug') slug: string,
+    @Query('priority') priority: string,
+    @Query('created') created: Date,
+    @Query('highlight') highlight?: string | undefined,
+  ) {
+    return this.servicesService.findAll(
+      +limit,
+      +skip,
+      name,
+      slug,
+      +priority,
+      created,
+      +highlight,
+    );
   }
 
   @Get(':id')

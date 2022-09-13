@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateHashtagDto, UpdateHashtagDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Hashtag } from './entities/hashtag.entity';
-import { Like, Repository } from 'typeorm';
+import { FindOptionsWhere, Like, Repository } from 'typeorm';
 
 @Injectable()
 export class HashtagsService {
@@ -17,12 +17,18 @@ export class HashtagsService {
     return newHashtag;
   }
 
-  async findAll() {
+  async findAll(limit: number, skip: number, name: string, created: Date) {
+    const where: FindOptionsWhere<Hashtag> = {};
+    name ? (where.name = name) : null;
+    created ? (where.createdAt = created) : null;
     return await this.hashtagsRepository.find({
       relations: {
         categories: true,
         services: true,
       },
+      where,
+      take: limit,
+      skip,
     });
   }
 

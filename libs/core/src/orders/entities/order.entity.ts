@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Post } from '@core/posts/entities/post.entity';
@@ -13,6 +14,9 @@ import { Service } from '@core/services/entities/service.entity';
 import { User } from '@core/users/entities/user.entity';
 import { InputOrder } from './input-order.entity';
 import { WorkerOrder } from './worker-order.entity';
+import { Meet } from '@core/meets/entities/meet.entity';
+import { TeamOrder } from '@core/teams/entities/team-order.entity';
+import { Board } from '@core/boards/entities/board.entity';
 
 @Entity({
   name: 'orders',
@@ -84,6 +88,15 @@ export class Order {
   })
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @OneToMany(() => Meet, (meet) => meet.order)
+  meets: Meet[];
+
+  @OneToMany(() => TeamOrder, (teamOrder) => teamOrder.order)
+  teamOrders: TeamOrder[];
+
+  @OneToOne(() => Board)
+  board: Board;
 
   @Column({ name: 'created_at' })
   createdAt: Date;

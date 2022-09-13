@@ -35,7 +35,7 @@ export class OrdersService {
       ? (where.workerOrders = { worker: { id: query.worker } })
       : null;
     query.client ? (where.user = { id: query.client }) : null;
-    return await this.ordersServiceCore.findAll(query.limit, where);
+    return await this.ordersServiceCore.findAll((query.limit = 10), where);
   }
 
   async findOne(id: number) {
@@ -45,11 +45,36 @@ export class OrdersService {
     return await this.ordersServiceCore.findOne(where);
   }
 
-  async update(id: number, updateOrderAdminDto: UpdateOrderAdminDto) {
-    return await this.ordersServiceCore.update(+id, updateOrderAdminDto);
+  async update(
+    id: number,
+    updateOrderAdminDto: UpdateOrderAdminDto,
+    userId: number,
+  ) {
+    return await this.ordersServiceCore.update(
+      +id,
+      updateOrderAdminDto,
+      +id,
+      +userId,
+    );
+  }
+
+  async updateInput(id: number, inputId: number) {
+    return await this.ordersServiceCore.updateInput(id, inputId);
+  }
+
+  async updateWorkerOrder(id: number, workerId: number) {
+    return await this.ordersServiceCore.updateWorkerOrder(id, workerId);
   }
 
   async remove(id: number) {
     return await this.ordersServiceCore.remove(+id);
+  }
+
+  async removeInput(id: number, inputId: number) {
+    return await this.ordersServiceCore.removeInput(id, inputId);
+  }
+
+  async removeOrderWorker(id: number, workerId: number) {
+    return await this.ordersServiceCore.removeOrderWorker(id, workerId);
   }
 }

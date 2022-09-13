@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from '../dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
-import { Like, Repository } from 'typeorm';
+import { FindOptionsWhere, Like, Repository } from 'typeorm';
 import { genSalt, hash } from 'bcrypt';
 
 @Injectable()
@@ -20,13 +20,33 @@ export class UsersService {
     return newUser;
   }
 
-  async findAll() {
+  async findAll(
+    limit: number,
+    skip: number,
+    username: string,
+    email: string,
+    country: string,
+    state: string,
+    city: string,
+    created: Date,
+  ) {
+    const where: FindOptionsWhere<User> = {};
+    username ? (where.username = username) : null;
+    email ? (where.email = email) : null;
+    country ? (where.country = country) : null;
+    state ? (where.state = state) : null;
+    city ? (where.city = city) : null;
+    created ? (where.createdAt = created) : null;
+
     const user: User[] = await this.usersRepository.find({
       relations: {
         worker: {
           services: true,
         },
       },
+      where,
+      take: limit,
+      skip,
     });
     user.map((user) => {
       user.transformAvatarBufferToString();

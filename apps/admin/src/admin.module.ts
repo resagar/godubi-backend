@@ -11,9 +11,16 @@ import { ItemsModule } from './items/items.module';
 import { WorkersModule } from './workers/workers.module';
 import { OrdersModule } from './orders/orders.module';
 import { SearchModule } from './search/search.module';
+import { MeetsModule } from './meets/meets.module';
+import { GuestsModule } from './guests/guests.module';
+import { TeamsModule } from './teams/teams.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { BoardsModule } from './boards/boards.module';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     CoreModule,
     UsersModule,
     LoginModule,
@@ -26,6 +33,11 @@ import { SearchModule } from './search/search.module';
     WorkersModule,
     OrdersModule,
     SearchModule,
+    MeetsModule,
+    GuestsModule,
+    TeamsModule,
+    BoardsModule,
+    TasksModule,
   ],
 })
 export class AdminModule {}

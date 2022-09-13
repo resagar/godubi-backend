@@ -54,8 +54,24 @@ export class ServicesController {
   }
 
   @Get()
-  findAll(@Query('highlight') highlight?: number | undefined) {
-    return this.servicesService.findAll(highlight);
+  findAll(
+    @Query('limit') limit = '10',
+    @Query('skip') skip = '0',
+    @Query('name') name: string,
+    @Query('slug') slug: string,
+    @Query('priority') priority: string,
+    @Query('created') created: Date,
+    @Query('highlight') highlight?: string | undefined,
+  ) {
+    return this.servicesService.findAll(
+      +limit,
+      +skip,
+      name,
+      slug,
+      +priority,
+      created,
+      +highlight,
+    );
   }
 
   @Get(':id')

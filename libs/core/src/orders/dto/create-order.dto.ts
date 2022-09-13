@@ -5,6 +5,7 @@ import { Service } from '@core/services/entities/service.entity';
 import { User } from '@core/users/entities/user.entity';
 
 export class CreateOrderDto {
+  id: number;
   chatId?: number;
   orderStatus?: string;
   orderBudget?: number;
@@ -21,4 +22,8 @@ export class CreateOrderDto {
   workers: Worker[];
   service: Service;
   user: User;
+
+  constructor(partial?: Partial<CreateOrderDto>) {
+    Object.assign(this, partial);
+  }
 }

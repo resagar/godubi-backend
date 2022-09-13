@@ -5,7 +5,7 @@ import {
   UpdateServiceDto,
 } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Like, Repository } from 'typeorm';
+import { FindOptionsWhere, In, Like, Repository } from 'typeorm';
 
 import { Service } from './entities/service.entity';
 import { ServiceWorker } from './entities/service-worker.entity';
@@ -15,6 +15,8 @@ import { ServiceResultEntity } from './entities/service-result.entity';
 import { CreateServiceHashtagDto } from '@core/services/dto/create-service-hashtag.dto';
 import { CreateServiceItemDto } from '@core/services/dto/create-service-item.dto';
 import { CreateServiceResultDto } from '@core/services/dto/create-service-result.dto';
+import { CreateServiceResponseDto } from '@core/services/dto/create-service-response.dto';
+import { Hashtag } from '@core/hashtags/entities/hashtag.entity';
 
 @Injectable()
 export class ServicesService {
@@ -29,6 +31,8 @@ export class ServicesService {
     private serviceItemRepository: Repository<ServiceItemEntity>,
     @InjectRepository(ServiceResultEntity)
     private serviceResultRepository: Repository<ServiceResultEntity>,
+    @InjectRepository(Hashtag)
+    private hashtagRepository: Repository<Hashtag>,
   ) {}
 
   async create(createServiceDto: CreateServiceDto) {
@@ -66,7 +70,23 @@ export class ServicesService {
     return newResultService;
   }
 
-  async findAll(highlight?: number | undefined) {
+  async findAll(
+    limit: number,
+    skip: number,
+    name: string,
+    slug: string,
+    priority: number,
+    created: Date,
+    highlight?: number,
+  ) {
+    const where: FindOptionsWhere<Service> = {};
+    name ? (where.name = name) : null;
+    priority ? (where.priority = priority) : null;
+    slug ? (where.slug = slug) : null;
+    created ? (where.createdAt = created) : null;
+    highlight ? (where.highlight = highlight) : In([0, 1]);
+    where.workers['status'] = 'approved';
+
     const services: Service[] = await this.servicesRepository.find({
       order: {
         priority: 'ASC',
@@ -84,9 +104,9 @@ export class ServicesService {
         portfolios: true,
         results: true,
       },
-      where: {
-        highlight: highlight ?? In([0, 1]),
-      },
+      where,
+      take: limit ?? 10,
+      skip: skip ?? 0,
     });
     services.map((service) => {
       service?.workers.map((worker) =>
@@ -97,27 +117,46 @@ export class ServicesService {
   }
 
   async findOne(id: number) {
-    const service: Service = await this.servicesRepository.findOne({
+    const service: CreateServiceResponseDto =
+      await this.servicesRepository.findOne({
+        relations: {
+          category: true,
+          hashtags: true,
+          items: true,
+          inputs: {
+            options: true,
+          },
+          workers: {
+            user: true,
+          },
+          results: true,
+          portfolios: true,
+        },
+        where: {
+          workers: {
+            status: 'approved',
+          },
+          id,
+        },
+      });
+    service?.workers.map((worker) =>
+      worker?.user?.transformAvatarBufferToString(),
+    );
+    const hashtagsId: number[] = service?.hashtags.map((hashtag) => hashtag.id);
+    const hashtags = await this.hashtagRepository.find({
       relations: {
-        category: true,
-        hashtags: true,
-        items: true,
-        inputs: {
-          options: true,
-        },
-        workers: {
-          user: true,
-        },
-        results: true,
-        portfolios: true,
+        services: true,
       },
       where: {
-        id,
+        id: In(hashtagsId),
       },
     });
-    service.workers.map((worker) =>
-      worker?.user.transformAvatarBufferToString(),
-    );
+    service.related = hashtags
+      ?.map(({ services }) => {
+        return services;
+      })
+      ?.reduce((p, c) => p.concat(c))
+      ?.filter((service) => service.id != id);
     return service;
   }
 

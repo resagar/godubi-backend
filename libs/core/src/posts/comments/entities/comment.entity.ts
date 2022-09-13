@@ -20,23 +20,23 @@ export class Comment {
   @Column()
   text: string;
 
-  // @Column({ name: 'post_id' })
-  // postId: number;
-
   @ManyToOne(() => Post, (post) => post.comments, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'post_id' })
   post: Post;
 
-  // @Column({ name: 'user_id' })
-  // userId: number;
+  @Column({ name: 'post_id' })
+  postId: number;
 
   @ManyToOne(() => User, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @Column({ name: 'user_id' })
+  userId: number;
 
   @Column({ name: 'created_at' })
   createdAt: Date;

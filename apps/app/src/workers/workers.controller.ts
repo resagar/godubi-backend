@@ -5,6 +5,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CreateWorkerDto, UpdateWorkerDto } from '@core/workers/dto';
@@ -22,8 +23,12 @@ export class WorkersController {
   }
 
   @Get()
-  findAll() {
-    return this.workersService.findAll();
+  findAll(
+    @Query('limit') limit = '10',
+    @Query('skip') skip = '0',
+    @Query('status') status: string,
+  ) {
+    return this.workersService.findAll(+limit, +skip, status);
   }
 
   @Get(':id')

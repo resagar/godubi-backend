@@ -2,7 +2,7 @@ export class CreateServiceItemDto {
   public itemService: ItemService[];
 }
 
-class ItemService {
+export class ItemService {
   public item: number;
   public service: number;
 }

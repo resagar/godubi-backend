@@ -14,6 +14,11 @@ import { WorkersModule } from './workers/workers.module';
 import { PostsModule } from './posts/posts.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { PortfolioModule } from './portfolio/portfolio.module';
+import { MeetsModule } from './meets/meets.module';
+import { GuestsModule } from './guests/guests.module';
+import { TeamsModule } from './teams/teams.module';
+import { BoardsModule } from './boards/boards.module';
+import { TasksModule } from './tasks/tasks.module';
 
 import configuration from './config/configuration';
 
@@ -24,14 +29,14 @@ import configuration from './config/configuration';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get<string>('app.database.host'),
-        port: configService.get<number>('app.database.port'),
-        username: configService.get<string>('app.database.username'),
-        password: configService.get<string>('app.database.password'),
-        database: configService.get<string>('app.database.name'),
+        host: configService.get<string>('database.host'),
+        port: configService.get<number>('database.port'),
+        username: configService.get<string>('database.username'),
+        password: configService.get<string>('database.password'),
+        database: configService.get<string>('database.name'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         autoLoadEntities: true,
-        synchronize: configService.get<boolean>('core.database.synchronize'),
+        synchronize: false,
       }),
     }),
     ConfigModule.forRoot({
@@ -51,6 +56,11 @@ import configuration from './config/configuration';
     PostsModule,
     NotificationsModule,
     PortfolioModule,
+    MeetsModule,
+    GuestsModule,
+    TeamsModule,
+    BoardsModule,
+    TasksModule,
   ],
 })
 export class CoreModule {}

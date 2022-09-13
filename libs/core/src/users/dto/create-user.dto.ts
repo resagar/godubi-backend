@@ -1,7 +1,7 @@
 import { Worker } from '@core/workers/entities/worker.entity';
 import { Order } from '@core/orders/entities/order.entity';
 import { PartialType } from '@nestjs/mapped-types';
-import { Matches, IsNotEmpty, IsEmail } from 'class-validator';
+import { IsEmail, IsNotEmpty, Matches } from 'class-validator';
 
 export class CreateUserDto {
   public id: number;
@@ -35,6 +35,10 @@ export class CreateUserDto {
   public website: string;
   public worker: CreateWorker;
   public orders: Order;
+
+  constructor(partial?: Partial<CreateUserDto>) {
+    Object.assign(this, partial);
+  }
 }
 
 class CreateWorker extends PartialType<Worker>(Worker) {}

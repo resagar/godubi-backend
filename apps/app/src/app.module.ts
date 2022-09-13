@@ -14,9 +14,14 @@ import { PostsModule } from './posts/posts.module';
 import { LoginModule } from './login/login.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { SearchModule } from './search/search.module';
+import { MeetsModule } from './meets/meets.module';
+import { GuestsModule } from './guests/guests.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { BoardsModule } from './boards/boards.module';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     CategoriesModule,
     CoreModule,
     HashtagsModule,
@@ -32,6 +37,9 @@ import { SearchModule } from './search/search.module';
     LoginModule,
     NotificationsModule,
     SearchModule,
+    MeetsModule,
+    GuestsModule,
+    BoardsModule,
   ],
 })
 export class AppModule {}

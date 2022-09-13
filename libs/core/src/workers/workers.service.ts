@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWorkerDto, UpdateWorkerDto } from './dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { FindOptionsWhere, Like, Repository } from 'typeorm';
 import { Worker } from './entities/worker.entity';
 
 @Injectable()
@@ -17,7 +17,10 @@ export class WorkersService {
     return newWorker;
   }
 
-  async findAll() {
+  async findAll(limit: number, skip: number, status: string) {
+    const where: FindOptionsWhere<Worker> = {};
+    status ? (where.status = status) : null;
+
     const workers: Worker[] = await this.workersRepository.find({
       relations: {
         user: true,
@@ -27,6 +30,9 @@ export class WorkersService {
           order: true,
         },
       },
+      where,
+      take: limit,
+      skip,
     });
     workers.map((worker) => worker?.user?.transformAvatarBufferToString());
     return workers;
@@ -69,5 +75,15 @@ export class WorkersService {
 
   async remove(id: number) {
     return await this.workersRepository.delete(id);
+  }
+  async getUserFromNotification(workerId: number) {
+    return this.workersRepository.findOne({
+      relations: {
+        user: true,
+      },
+      where: {
+        id: workerId,
+      },
+    });
   }
 }

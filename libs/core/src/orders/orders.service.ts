@@ -15,6 +15,9 @@ import { WorkerOrder } from '@core/orders/entities/worker-order.entity';
 import { CreateWorkerOrderDto } from '@core/orders/dto/create-worker-order.dto';
 import { OrderTotals } from './dto/get-totals-order.dto';
 import { Worker } from '@core/workers/entities/worker.entity';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { OrderChangeStatusEvent } from '@core/orders/events/order-change-status.event';
+import { AddWorkerInOrderEvent } from './events/add-worker-in-order.event';
 
 @Injectable()
 export class OrdersService {
@@ -25,8 +28,7 @@ export class OrdersService {
     private inputsOrdersRepository: Repository<InputOrder>,
     @InjectRepository(WorkerOrder)
     private workersOrdersRepository: Repository<WorkerOrder>,
-    @InjectRepository(Worker)
-    private workerRepository: Repository<Worker>,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async create(createOrderDto: CreateOrderDto) {
@@ -46,6 +48,12 @@ export class OrdersService {
     const { workerOrder } = createWorkerOrderDto;
     const newWorkerOrder = this.workersOrdersRepository.create(workerOrder);
     await this.workersOrdersRepository.save(newWorkerOrder);
+    workerOrder.map((workerOrder) =>
+      this.eventEmitter.emit(
+        'order.add.worker',
+        new AddWorkerInOrderEvent(workerOrder.order.id, workerOrder.worker.id),
+      ),
+    );
     return newWorkerOrder;
   }
 
@@ -132,6 +140,22 @@ export class OrdersService {
     return order;
   }
 
+  async getUserFromNotification(orderId: number) {
+    return await this.ordersRepository.findOne({
+      relations: {
+        workerOrders: {
+          worker: {
+            user: true,
+          },
+        },
+        user: true,
+      },
+      where: {
+        id: orderId,
+      },
+    });
+  }
+
   async update(
     criteria:
       | string
@@ -144,8 +168,44 @@ export class OrdersService {
       | ObjectID[]
       | FindOptionsWhere<Order>,
     updateOrderDto: UpdateOrderDto | UpdateOrderWorkerDto | UpdateOrderAdminDto,
+    orderId: number,
+    userId: number,
   ) {
-    return await this.ordersRepository.update(criteria, updateOrderDto);
+    await this.ordersRepository.update(criteria, updateOrderDto);
+    if (updateOrderDto['orderStatus'] !== undefined)
+      this.eventEmitter.emit(
+        'order.change.status',
+        new OrderChangeStatusEvent(orderId, userId),
+      );
+    return;
+  }
+
+  async updateInput(id: number, inputId: number) {
+    return await this.inputsOrdersRepository.update(
+      {
+        order: {
+          id,
+        },
+        input: {
+          id: inputId,
+        },
+      },
+      { order: { id }, input: { id: inputId } },
+    );
+  }
+
+  async updateWorkerOrder(id: number, workerId: number) {
+    return await this.workersOrdersRepository.update(
+      {
+        order: {
+          id,
+        },
+        worker: {
+          id: workerId,
+        },
+      },
+      { order: { id }, worker: { id: workerId } },
+    );
   }
 
   async updateWorker(
@@ -167,7 +227,7 @@ export class OrdersService {
         return `workers_id = ${subQuery}`;
       });
 
-    return await this.ordersRepository
+    await this.ordersRepository
       .createQueryBuilder()
       .update()
       .set(updateOrderDto)
@@ -176,10 +236,39 @@ export class OrdersService {
       .setParameter('orderId', id)
       .setParameter('userId', userId)
       .execute();
+
+    if (updateOrderDto['orderStatus'] !== undefined)
+      this.eventEmitter.emit(
+        'order.change.status',
+        new OrderChangeStatusEvent(id, userId),
+      );
+    return;
   }
 
   async remove(id: number) {
     return await this.ordersRepository.delete(id);
+  }
+
+  async removeInput(id: number, inputId: number) {
+    return await this.inputsOrdersRepository.delete({
+      order: {
+        id,
+      },
+      input: {
+        id: inputId,
+      },
+    });
+  }
+
+  async removeOrderWorker(id: number, workerId: number) {
+    return await this.workersOrdersRepository.delete({
+      order: {
+        id,
+      },
+      worker: {
+        id: workerId,
+      },
+    });
   }
 
   async getTotalOrders(userId: number) {
